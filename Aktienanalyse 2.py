@@ -4,7 +4,7 @@ Created on Wed Nov 25 20:23:38 2020
 
 @author: Yannic
 """
-
+# dies ist ein kommentar
 #$ conda install -c ranaroussi yfinance
 from matplotlib import pyplot as plt
 # import pandas as pd
