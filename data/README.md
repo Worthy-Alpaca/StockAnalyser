@@ -1,1 +1,0 @@
-Hier könnt ihr eure Datenträger wie Excel oder CSV Dateien ablegen. Diese werden nicht getrakt so dass wir jeder eigene Daten verwenden können und keine großen Dateien im Repo haben.
