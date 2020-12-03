@@ -12,8 +12,8 @@ from matplotlib import pyplot as plt
 import yfinance as yf
 import json
 
- ### Dies ist ein Text
- 
+###dies ist ein test
+
 with open('config.json') as file:
     config = json.load(file)
 
