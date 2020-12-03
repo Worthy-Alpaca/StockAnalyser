@@ -10,7 +10,10 @@ Aktienanalyse
 from matplotlib import pyplot as plt
 # import pandas as pd
 import yfinance as yf
+import json
 
+with open('config.json') as file:
+    config = json.load(file)
 
 apple = yf.Ticker("AAPL")
 google = yf.Ticker("GOOG")
