@@ -12,7 +12,7 @@ import yfinance as yf
 # from datetime import datetime
 # from time import time
 
-apple = yf.Ticker("AAPL")
+apple = yf.Ticker("AAPL") #Appleaktie
 # google = yf.Ticker("GOOG")
 etf1 = yf.Ticker("ZPRX.DE")
 #etf2 = yf.Ticker("XWD.TO")
