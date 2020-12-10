@@ -14,27 +14,27 @@ import yfinance as yf
 
 apple = yf.Ticker("AAPL") #Appleaktie
 # google = yf.Ticker("GOOG")
-etf1 = yf.Ticker("ZPRX.DE")
-#etf2 = yf.Ticker("XWD.TO")
-#msft = yf.Ticker("MSFT")
+# etf1 = yf.Ticker("ZPRX.DE")
+# etf2 = yf.Ticker("XWD.TO")
+# msft = yf.Ticker("MSFT")
 
 print(apple.history(start=("2019-02-01"), end=("2019-03-07")))
 # print(google.history(start=("2019-02-01"), end=("2019-03-07")))
-print(etf1.history(start=("2019-02-01"), end=("2019-03-07")))
+# print(etf1.history(start=("2019-02-01"), end=("2019-03-07")))
 # print(etf2.history(start=("2019-02-01"), end=("2019-03-07")))
 # print(msft.history(start=("2019-02-01"), end=("2019-03-07")))
 
-data = yf.download(("AAPL", "ZPRX.DE") , start="2019-02-01", end="2019-02-25")
+data = yf.download(("AAPL") , start="2019-02-01", end="2019-02-25")
 
 plt.figure()
 data["Close"].plot()     #es funktioniert nicht Close und Open in ein Diagram zu plotten
-#data["Open"].plot()
-plt.title("Apple und ETF Chart")
+data["Open"].plot()
+plt.title("Apple")
 plt.legend()
 
 
 
-data = yf.download("AAPL", start="x", end="y", interval="15m")
+# data = yf.download("AAPL", start="x", end="y", interval="15m")
 
 # x = time('%20-%11-%17')
 # y = time('year(2020)', 'month(11)','day(17)','hours(14)')
@@ -43,11 +43,11 @@ data = yf.download("AAPL", start="x", end="y", interval="15m")
 # x = datetime.datetime(2020, 11, 17, 10, 0, 0)
 # y = datetime.datetime(2020, 11, 17, 12, 0, 0)
 
-plt.figure()
-data["Close"].plot()
-data["Open"].plot()
-plt.title("ETF1  Chart")
-plt.legend()
+# plt.figure()
+# data["Close"].plot()
+# data["Open"].plot()
+# plt.title("ETF1  Chart")
+# plt.legend()
 
 # data = yf.download("XWD.TO", start="2019-02-01", end="2019-02-25")
 
