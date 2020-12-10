@@ -38,7 +38,7 @@ if __name__=="__main__":
     Aktie = Model(Aktienkurs, Startwert, Endwert, Interval)
 
 
-# rint(Aktie.start)
+# print(Aktie.start)
 
 # print(Aktienkurs)
 
@@ -49,7 +49,3 @@ plt.figure()
 data["Open"].plot()
 plt.title(Aktienkurs)
 plt.legend()
-
-
-# strasse = Strasse()
-# audi.drive(strasse)
