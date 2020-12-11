@@ -1,5 +1,6 @@
 """
 Tutorials
+https://pythonprogramming.net/getting-stock-prices-python-programming-for-finance/
 11.12.2020
 """
 import datetime as dt
