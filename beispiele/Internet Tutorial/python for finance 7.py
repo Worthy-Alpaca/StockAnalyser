@@ -60,7 +60,8 @@ def compile_data():
     
     main_df = pd.DataFrame()
     for count, ticker in enumerate(tickers):
-        df = pd.read_csv('stock_dfs/{}.csv'.format(tickers), "r")
+        #df = pd.read_csv('stock_dfs/{}.csv'.format(tickers), "r")                                      #versuche das Problem zu finden, wie ich den Path richtig aufrufen kann
+        df = pd.read_csv('stock_dfs/{}.csv'.format(ticker), delimiter=r'\s+', encoding="utf-8-sig")     #mit dieser Zeile funktioniert es schon etwas besser
         df.set_index('Date', inplace=True)
 
         df.rename(columns = {'Adj Close':ticker}, inplace=True)
