@@ -41,7 +41,7 @@ def get_data_from_yahoo(reload_sp500=False):
             tickers = pickle.load(f)
     if not os.path.exists('stock_dfs'):
         os.makedirs('stock_dfs')
-    start = dt.datetime(2016, 6, 8)
+    start = dt.datetime(2010, 6, 8)
     end = dt.datetime.now()
     for ticker in tickers:
         print(ticker)
