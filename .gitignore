@@ -1,3 +1,5 @@
+# dev stuff
 /data
-
+__pycache__
 config.json
+basic_io.py
