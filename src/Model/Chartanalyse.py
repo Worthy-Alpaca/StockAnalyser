@@ -30,7 +30,6 @@ print(aapl['Adj High'])
 print(aapl['Adj Low'])
 
 
-from ta.trend import ADXIndicator
 adxI = ADXIndicator(aapl['Adj High'],aapl['Adj Low'],aapl['Adj Close'],14,False)
 aapl['pos_directional_indicator'] = adxI.adx_pos()
 aapl['neg_directional_indicator'] = adxI.adx_neg()
