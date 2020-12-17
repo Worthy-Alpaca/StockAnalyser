@@ -8,7 +8,7 @@ from matplotlib import style        # so sieht es besser aus
 import mplfinance
 from mplfinance.original_flavor import candlestick_ohlc
 # from mplfinance import candlestick_ohlc
-#from matplotlib.finance import candelstick_ohlc  # Candelsticks
+# from matplotlib.finance import candelstick_ohlc  # Candelsticks
 import matplotlib.dates as mdates
 import pandas as pd
 import pandas_datareader.data as web
@@ -43,5 +43,3 @@ candlestick_ohlc(ax1, df_ohlc.values, width=4, colorup='g')
 ax2.fill_between(df_volume.index.map(mdates.date2num), df_volume.values, 0)
 
 plt.show()
-
-
