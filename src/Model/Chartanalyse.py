@@ -18,10 +18,17 @@ from ta.trend import ADXIndicator
 import yfinance as yf
 aapl = yf.download('AAPL', '2017-1-1','2019-12-18')
 
+print(aapl)
+
 aapl['Adj Open'] = aapl.Open * aapl['Adj Close']/aapl['Close']
 aapl['Adj High'] = aapl.High * aapl['Adj Close']/aapl['Close']
 aapl['Adj Low'] = aapl.Low * aapl['Adj Close']/aapl['Close']
 aapl.dropna(inplace=True)
+
+print(aapl['Adj Open'])
+print(aapl['Adj High'])
+print(aapl['Adj Low'])
+
 
 from ta.trend import ADXIndicator
 adxI = ADXIndicator(aapl['Adj High'],aapl['Adj Low'],aapl['Adj Close'],14,False)
