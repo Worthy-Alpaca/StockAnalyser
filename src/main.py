@@ -5,27 +5,25 @@ Created on 05.12.2020
 Interface
 """
 
-# Dummy stuff
-from logging import FileHandler
+""" Importing dummy classes """
 from basic_io.basic_io import Input
 from dummy.charts import DummyCharts
 
-# import config
+""" import config """
 import config
 
-# Importing packages
+""" Importing packages """
+# import tkinter
 import tkinter as tk
-from tkinter import filedialog, Text
-import yfinance as yf
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
+from tkinter import filedialog
+# import matplotlib
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 from matplotlib import pyplot as plt
-import os
+# import additional modules
 import json
 class Mainframe:
     def __init__(self):
-        # green background
-        #self.showStartPage(master)
         self.mainframe = tk.Tk()
         self.mainframe.title("STONKS analysis")
         self.mainframe.geometry("1200x700")
@@ -35,6 +33,7 @@ class Mainframe:
         self.createForms()
         self.setFigure()
         
+    """ @description: method that creates the File menu """
     def createMenu(self):
        menubar = tk.Menu(self.mainframe)
        filemenu = tk.Menu(menubar, tearoff=0)
@@ -52,17 +51,13 @@ class Mainframe:
 
        self.mainframe.config(menu=menubar)
 
+    """ @description: method that creates the button(s) """
     def createButtonMenu(self):
        self.button_plot = tk.Button(
            master=self.mainframe, height=1, width=10, text="Plot", command=self.plotGraph)
-       self.button_analyze = tk.Button(
-           master=self.mainframe, height=1, width=10, text="Analze")
-       self.button_predict = tk.Button(
-           master=self.mainframe, height=1, width=10, text="Predict")
        self.button_plot.grid(row=0, column=8, padx=(30, 0))
-       #self.button_analyze.grid(row=0, column=9, padx=(30, 0))
-       #self.button_predict.grid(row=0, column=10, padx=(30, 0))
 
+    """ @description: method that creates the inputs """
     def createForms(self):
         self.label1 = tk.Label(
            self.mainframe, text="1. Stock name:").grid(row=0, column=0)
@@ -93,9 +88,11 @@ class Mainframe:
         self.option = tk.OptionMenu(self.mainframe, self.variable, *OptionList)
         self.option.grid(row=0, column=7)
 
+    """ @description: dummy function that does nothing """
     def donothing(self):
        pass
 
+    """ @description: read all inputs and return as object """
     def parseInput(self):
         data = Input()
         data.setFirstStock(str(self.stock1.get()))
@@ -104,43 +101,26 @@ class Mainframe:
         data.setEndDate(str(self.date2.get()))
         return data
 
+    """ @description: function that initiates the calculations """
     def plotGraph(self):
-        """
-        data = Input()
-        data.setFirstStock(str(self.stock1.get()))
-        data.setSecondStock(str(self.stock2.get()))
-        data.setStartDate(str(self.date1.get()))
-        data.setEndDate(str(self.date2.get()))"""
         data = self.parseInput()
-        print(data)
-        #print(data.getAllData())
-        #chart = DummyCharts()
         test = DummyCharts().chart(data, self.figure)
         print(test)
-        #self.figure.add_subplot(111).plot(test.index, test['Adj Close'])
-        #t = np.arange(0, 3, .01)
-        #self.figure.add_subplot(111).plot(t, 2 * np.sin(2 * np.pi * t))
+        # refresh the canvas
         self.canvas.draw()
-        
-        #chart = str(self.e1.get())
-        #startDate = str(self.e2.get())
-        #endDate = str(self.e3.get())
-        #print(self.variable.get())
-        #data = yf.download(chart, start=startDate, end=endDate)
        
+    """ @description: create the chart foundation """
     def setFigure(self):
         self.figure = Figure(figsize=(11.6, 6.5), dpi=100)
-        #t = np.arange(0, 3, .01)
-        #self.figure.add_subplot(111).plot(t, 2 * np.sin(2 * np.pi * t))
         self.canvas = FigureCanvasTkAgg(self.figure, self.mainframe)
         self.canvas.draw()
         self.canvas.get_tk_widget().grid(
             row=2, column=0, columnspan=10, rowspan=10, padx=(20, 20))
-
         #self.toolbar = NavigationToolbar2Tk(self.canvas, self.mainframe)
         #self.toolbar.update()
         #self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
         
+    """ @description: function to clear all inputs """
     def new(self):
         self.stock1.delete(0, 'end')
         self.stock2.delete(0, 'end')
@@ -150,6 +130,7 @@ class Mainframe:
     def save(self):
         pass
 
+    """ @description: function to save the current inputs to a JSON """
     def saveAs(self):
         file_opt = options = {}
         options['filetypes'] = [('JSON files', '.json'), ('all files', '.*')]
@@ -167,6 +148,8 @@ class Mainframe:
         }
         json.dump(data, filename)
 
+    """ @description: function to save the current chart as a PNG """
+    """ CURRENTLY NOT WORKING """
     def saveChart(self):
         return 
         file_opt = options = {}
@@ -179,6 +162,7 @@ class Mainframe:
 
         plt.saveas(self.figure, filename)
 
+    """ @description: function to open an existing JSON and load it to the GUI """
     def open(self):
         filename = filedialog.askopenfilename(initialdir=config._path + "data",
                                               title="Select file", filetypes=(("JSON files", "*.json"), ("all files", "*.*")))
@@ -191,14 +175,13 @@ class Mainframe:
         self.stock1.insert(0, data["stock1"])
         self.stock2.insert(0, data["stock2"])
         self.date1.insert(0, data["date1"])
-        self.date2.insert(0, data["date2"])
-        #for con in config:
-            #print(config[con])
-            #self.con.insert(0, config[f"{con}"])
+        self.date2.insert(0, data["date2"])        
 
+    """ @description: function to close the GUI """
     def close(self):
         self.mainframe.quit()
 
+    """ @description: function to run the GUI """
     def run(self):
         self.mainframe.mainloop()
      
