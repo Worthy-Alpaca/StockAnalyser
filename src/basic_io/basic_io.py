@@ -18,10 +18,20 @@ class Input():
         self.stock2 = stock
 
     def setStartDate(self, date):
-        self.startDate = date
+        parsedate = []
+        stringDate = date.split("-")
+        for i in stringDate:
+            parsedate.append(int(i))
+        
+        self.startDate = parsedate
 
     def setEndDate(self, date):
-        self.endDate = date
+        parsedate = []
+        stringDate = date.split("-")
+        for i in stringDate:
+            parsedate.append(int(i))
+        
+        self.endDate = parsedate
 
     def getStock1(self):
         return self.stock1
@@ -34,3 +44,6 @@ class Input():
 
     def getEndDate(self):
         return self.endDate
+
+    def getAllData(self):
+        return self.stock1, self.stock2, self.startDate, self.endDate
