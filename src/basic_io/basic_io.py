@@ -1,3 +1,10 @@
+"""
+Created on 16.12.2020
+@author: Stephan Schumacher
+
+Dummy input class used for testing
+"""
+
 
 import json
 
