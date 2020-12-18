@@ -127,9 +127,6 @@ class Mainframe:
         self.date1.delete(0, 'end')
         self.date2.delete(0, 'end')
 
-    def save(self):
-        pass
-
     """ @description: function to save the current inputs to a JSON """
     def saveAs(self):
         file_opt = options = {}
