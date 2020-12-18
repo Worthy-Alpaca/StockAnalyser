@@ -10,6 +10,9 @@ from logging import FileHandler
 from basic_io.basic_io import Input
 from dummy.charts import DummyCharts
 
+# import config
+import config
+
 # Importing packages
 import tkinter as tk
 from tkinter import filedialog, Text
@@ -24,7 +27,7 @@ class Mainframe:
         # green background
         #self.showStartPage(master)
         self.mainframe = tk.Tk()
-        self.mainframe.title("chart analysis tool")
+        self.mainframe.title("STONKS analysis")
         self.mainframe.geometry("1200x700")
 
         self.createMenu()
@@ -37,9 +40,11 @@ class Mainframe:
        filemenu = tk.Menu(menubar, tearoff=0)
        filemenu.add_command(label="New", command=self.new)
        filemenu.add_command(label="Load", command=self.open)
-       filemenu.add_command(label="Save", command=self.save)
+       filemenu.add_command(label="Save", command=self.saveAs)
        filemenu.add_command(label="Save as...", command=self.saveAs)
        filemenu.add_command(label="Close", command=self.close)
+       filemenu.add_separator()
+       filemenu.add_command(label="Save Chart", command=self.saveChart)
        filemenu.add_separator()
 
        filemenu.add_command(label="Exit", command=self.close)
@@ -148,33 +153,45 @@ class Mainframe:
     def saveAs(self):
         file_opt = options = {}
         options['filetypes'] = [('JSON files', '.json'), ('all files', '.*')]
-        options['initialdir'] = "C:/Users/Stephan/source/repos/diwi4/data"
+        options['initialdir'] = config._path + "data"
 
         filename = filedialog.asksaveasfile(defaultextension=".json", **file_opt)
         if filename is None:  
             return
             
-        config = {
+        data = {
             "stock1": str(self.stock1.get()),
             "stock2": str(self.stock2.get()),
             "date1": str(self.date1.get()),
             "date2": str(self.date2.get())
         }
-        json.dump(config, filename)
+        json.dump(data, filename)
 
+    def saveChart(self):
+        return 
+        file_opt = options = {}
+        options['filetypes'] = [('Chart files', '.png'), ('all files', '.*')]
+        options['initialdir'] = config._path + "data"
+
+        filename = filedialog.asksaveasfile(defaultextension=".png", **file_opt)
+        if filename is None:
+            return
+
+        plt.saveas(self.figure, filename)
 
     def open(self):
-        filename = filedialog.askopenfilename(initialdir="C:/Users/Stephan/source/repos/diwi4/data",
+        filename = filedialog.askopenfilename(initialdir=config._path + "data",
                                               title="Select file", filetypes=(("JSON files", "*.json"), ("all files", "*.*")))
-        
+        if filename is None:
+            return
         with open(filename) as file:
-            config = json.load(file)
+            data = json.load(file)
 
         self.new()
-        self.stock1.insert(0, config["stock1"])
-        self.stock2.insert(0, config["stock2"])
-        self.date1.insert(0, config["date1"])
-        self.date2.insert(0, config["date2"])
+        self.stock1.insert(0, data["stock1"])
+        self.stock2.insert(0, data["stock2"])
+        self.date1.insert(0, data["date1"])
+        self.date2.insert(0, data["date2"])
         #for con in config:
             #print(config[con])
             #self.con.insert(0, config[f"{con}"])
