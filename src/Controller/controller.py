@@ -3,6 +3,7 @@ Created on 03.12.2020
 @author: Stephan Schumacher
 
 Controller class
+NOT NEEDED AT THIS POINT
 """
 
 import sys
