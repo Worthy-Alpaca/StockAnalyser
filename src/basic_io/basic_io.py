@@ -6,7 +6,6 @@ Input Class, used for cleaning and parsing input from GUI
 """
 
 from urllib.request import urlopen
-#from basic_io import stocks
 import json
 
 class Input():
