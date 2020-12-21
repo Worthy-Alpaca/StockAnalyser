@@ -29,7 +29,7 @@ class Mainframe:
         self.mainframe.geometry("1200x700")
 
         self.createMenu()
-        self.createButtonMenu()
+        self.createButton(8, 0, "Plot", self.plotGraph)
         self.createForms()
         self.setFigure()
         
@@ -51,11 +51,11 @@ class Mainframe:
 
        self.mainframe.config(menu=menubar)
 
-    """ @description: method that creates the button(s) """
-    def createButtonMenu(self):
-       self.button_plot = tk.Button(
-           master=self.mainframe, height=1, width=10, text="Plot", command=self.plotGraph)
-       self.button_plot.grid(row=0, column=8, padx=(30, 0))
+    """ @description: method that creates a button """
+    def createButton(self, posX, posY, name, function):
+       self.button = tk.Button(
+           master=self.mainframe, height=1, width=10, text=name, command=function)
+       self.button.grid(row=posY, column=posX, padx=(30, 0))
 
     """ @description: method that creates the inputs """
     def createForms(self):
