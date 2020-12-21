@@ -95,8 +95,8 @@ class Mainframe:
     """ @description: read all inputs and return as object """
     def parseInput(self):
         data = Input()
-        data.setFirstStock(str(self.stock1.get()))
-        data.setSecondStock(str(self.stock2.get()))
+        data.setFirstStock(str(self.stock1.get()), self.stock1)
+        data.setSecondStock(str(self.stock2.get()), self.stock2)
         data.setStartDate(str(self.date1.get()))
         data.setEndDate(str(self.date2.get()))
         return data
