@@ -1,5 +1,6 @@
+# dev stuff
 /data
 .vscode
-beispiele/Internet Tutorial/Tutorial Part 4.py
+__pycache__
 config.json
-beispiele\Internet Tutorial\stock_dfs
+config.py
