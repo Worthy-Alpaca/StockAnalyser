@@ -3,5 +3,4 @@
 .vscode
 __pycache__
 config.json
-/src/dummy
 config.py
