@@ -122,6 +122,9 @@ class Analyse:
 
         
     def volatilität(self,data):
+
+        #https://medium.com/python-data/time-series-aggregation-techniques-with-python-a-look-at-major-cryptocurrencies-a9eb1dd49c1b
+
         startDate = data.getStartDate()
         endDate = data.getEndDate()
 
