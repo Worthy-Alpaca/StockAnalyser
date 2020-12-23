@@ -23,11 +23,12 @@ from matplotlib.figure import Figure
 from matplotlib import pyplot as plt
 # import additional modules
 import json
+import inspect
 class Mainframe:
     def __init__(self):
         self.mainframe = tk.Tk()
         self.mainframe.title("STONKS analysis")
-        self.mainframe.geometry("1200x700")
+        self.mainframe.geometry("1200x750")
 
         self.calDate1 = None
         self.calDate2 = None
@@ -64,6 +65,19 @@ class Mainframe:
            master=self.mainframe, height=1, width=10, text=name, command=function)
        self.button.grid(row=posY, column=posX, padx=(30, 0))
 
+    def method_finder(self, classname):
+        non_magic_class = []
+        class_methods = dir(classname)
+        for m in class_methods:
+            if m.startswith('__'):
+                continue
+            elif m.startswith('parseDate'):
+                continue
+            else:
+                non_magic_class.append(m)
+
+        return non_magic_class
+
     """ @description: method that creates the inputs """
     def createForms(self):
         self.label1 = tk.Label(
@@ -77,10 +91,8 @@ class Mainframe:
         self.label4 = tk.Label(
            self.mainframe, text="Plot options").grid(row=0, column=6)
 
-        OptionList = [
-            "Durchschnitt", 
-            "Candlestick"
-        ]
+        functions = Analyse()
+        OptionList = self.method_finder(functions)
 
         self.variable = tk.StringVar(self.mainframe)
         self.variable.set(OptionList[0])
@@ -102,8 +114,7 @@ class Mainframe:
 
     """ @description: dummy function that does nothing """
     def donothing(self):
-       print(self.variable.get())
-       print(self.calDate2)
+        pass
 
     def showCal1(self):
         self.top = tk.Toplevel(self.mainframe)
@@ -146,18 +157,14 @@ class Mainframe:
     """ @description: function that initiates the calculations """
     def plotGraph(self):
         data = self.parseInput()
-        #print(data.getAllData())
-        #test = DummyCharts().chart(data, self.figure)
         chart = Analyse()
-        choice = self.variable.get()
-        """ if choice.lower() == "durchschnitt":
-            chart.durchschnitt(data)
-        elif choice.lower() == "candlestick":
-            print(chart.candlestick(data)) """
-
+        choice = [self.variable.get().lower()]
         # adding the subplot
         plot = self.figure.add_subplot(111)
-        #chart.bollinger(data, plot)
+        
+        for c in choice:
+            getattr(chart, c)(data, plot)
+        
         # refresh the canvas
         self.canvas.draw()
        
@@ -171,8 +178,7 @@ class Mainframe:
         self.toolbar = NavigationToolbar2Tk(self.canvas, self.mainframe, pack_toolbar=False)
         self.toolbar.update()
         self.toolbar.grid(
-            row=10, column=0, columnspan=10, rowspan=10, padx=(20, 20))
-        #self.toolbar = NavigationToolbar2Tk()
+            row=13, column=0, columnspan=10, rowspan=10, padx=(20, 20))
         
     """ @description: function to clear all inputs """
     def new(self):
