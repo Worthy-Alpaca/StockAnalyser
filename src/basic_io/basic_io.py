@@ -18,11 +18,11 @@ class Input():
             self.startDate = config["datum1"]
             self.endDate = config["datum2"]
 
-    def setFirstStock(self, stock, entry):
-        self.stock1 = self.parseStock(stock, entry)
+    def setFirstStock(self, stock):
+        self.stock1 = self.parseStock(stock)
 
-    def setSecondStock(self, stock, entry):
-        self.stock2 = self.parseStock(stock, entry)
+    def setSecondStock(self, stock):
+        self.stock2 = self.parseStock(stock)
 
     def setStartDate(self, date):
         parsedate = []
@@ -40,7 +40,7 @@ class Input():
         
         self.endDate = parsedate
 
-    def parseStock(self, stock, entry):
+    def parseStock(self, stock):
         if (stock.lower() == "google"):
             stock = "alphabet"
 
@@ -52,7 +52,7 @@ class Input():
             return test[0]["symbol"]
             #print(test)
         else:
-            return entry.config(highlightbackground="red")
+            return #entry.config(highlightbackground="red")
         
 
     def getStock1(self):
