@@ -22,6 +22,8 @@ def durchschnitt():
     df['100ma'] = df['Adj Close'].rolling(window=100, min_periods=0).mean()        # 100 Average
     df['38ma'] = df['Adj Close'].rolling(window=38, min_periods=0).mean()          # 38  Average
 
+
+def ausgabe():
     print(df.head())
 
     ax1 = plt.subplot2grid((6,1), (0,0), rowspan=5, colspan=1)
@@ -35,4 +37,4 @@ def durchschnitt():
     plt.show()
 
 durchschnitt()
-
+ausgabe()
