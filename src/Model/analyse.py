@@ -91,22 +91,48 @@ class Analyse:
 
         plt.show()
 
+    def bollinger(self,data):
 
+        #https://medium.com/python-data/setting-up-a-bollinger-band-with-python-28941e2fa300'
+
+        startDate = data.getStartDate()
+        endDate = data.getEndDate()
+
+        start = dt.datetime(startDate[0], startDate[1], startDate[2])
+        end = dt.datetime(endDate[0], endDate[1], endDate[2])
+
+        style.use('ggplot')
+        df = web.DataReader(data.getStock1(), 'yahoo', start, end)
+
+        df['30 Day MA'] = df['Adj Close'].rolling(window=20).mean()
+        df['30 Day STD'] = df['Adj Close'].rolling(window=20).std()
+
+        #Upper Band
+        df['Upper Band'] = df['30 Day MA'] + (df['30 Day STD'] * 2)
         
+        #Lower Band
+        df['Lower Band'] = df['30 Day MA'] - (df['30 Day STD'] * 2)
         
+        df[['Adj Close', '30 Day MA', 'Upper Band', 'Lower Band']].plot(figsize=(12,6))
+        plt.title(f"30 Day Bollinger Band {data.getStock1()}" )
+        plt.ylabel('Price (USD)')
+        plt.show()
+        
+
 
 
 
 if __name__ == "__main__":
-    #sys.path.append("C:/Users/Yannic/OneDrive/Dokumente/Technische Hochschule Lübeck/Projekt Digitale Wirtschaft/diwi4/src/" + "basic_io")
+    sys.path.append("C:/Users/Yannic/OneDrive/Dokumente/Technische Hochschule Lübeck/Projekt Digitale Wirtschaft/diwi4/src/" + "basic_io")
     #sys.path.append("C:/Users/Nils/Desktop/AllesMögliche/TH/5.Semester/DiWi/diwi4/src/" + "basic_io")
     from basic_io import Input
     data = Input()
     data.setFirstStock("AAPL")
     data.setSecondStock("GOOGL")
-    data.setStartDate("2012-12-12")
+    data.setStartDate("2018-12-12")
     data.setEndDate("2020-12-12")
     test = Analyse()
-    test.durchschnitt(data)
+    #test.durchschnitt(data)
     #test.candlestick(data)
+    test.bollinger(data)
     #test.volume(data)
