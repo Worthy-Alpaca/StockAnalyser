@@ -159,11 +159,11 @@ class Mainframe:
         data = self.parseInput()
         chart = Analyse()
         choice = [self.variable.get().lower()]
-        # adding the subplot
-        plot = self.figure.add_subplot(111)
-        
+        # clearing the subplot
+        self.plot.cla() 
+        # executing the function dynamically       
         for c in choice:
-            getattr(chart, c)(data, plot)
+            getattr(chart, c)(data, self.plot)
         
         # refresh the canvas
         self.canvas.draw()
@@ -179,6 +179,7 @@ class Mainframe:
         self.toolbar.update()
         self.toolbar.grid(
             row=13, column=0, columnspan=10, rowspan=10, padx=(20, 20))
+        self.plot = self.figure.add_subplot(111)
         
     """ @description: function to clear all inputs """
     def new(self):
