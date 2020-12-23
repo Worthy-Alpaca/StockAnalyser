@@ -156,17 +156,20 @@ class Analyse:
 
 if __name__ == "__main__":
     #sys.path.append("C:/Users/Yannic/OneDrive/Dokumente/Technische Hochschule Lübeck/Projekt Digitale Wirtschaft/diwi4/src/" + "basic_io")
-    sys.path.append("C:/Users/Nils/Desktop/AllesMögliche/TH/5.Semester/DiWi/diwi4/src/" + "basic_io")
+    #sys.path.append("C:/Users/Nils/Desktop/AllesMögliche/TH/5.Semester/DiWi/diwi4/src/" + "basic_io")
+    #sys.path.append("C:/Users/Stephan/source/repos/diwi4/src/" + "basic_io")
     from basic_io import Input
     data = Input()
     data.setFirstStock("AAPL")
     data.setSecondStock("GOOGL")
     data.setStartDate("2018-12-12")
     data.setEndDate("2020-12-12")
+    plot = plt.subplot2grid((6, 1), (0, 0), rowspan=5, colspan=1)
     test = Analyse()
-    #test.durchschnitt(data)
+    test.durchschnitt(data, plot)
     #test.candlestick(data)
     #test.bollinger(data)
     #test.volume(data)#
     #test.volatilität(data)
     #test.dailyreturns(data)
+    plt.show()
