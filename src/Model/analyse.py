@@ -113,18 +113,41 @@ class Analyse:
         #Lower Band
         df['Lower Band'] = df['30 Day MA'] - (df['30 Day STD'] * 2)
         
-        df[['Adj Close', '30 Day MA', 'Upper Band', 'Lower Band']].plot(figsize=(12,6))
-        plt.title(f"30 Day Bollinger Band {data.getStock1()}" )
+        df[['Adj Close', 'Upper Band', 'Lower Band']].plot(figsize=(12,6))
+        #df[['Adj Close', '30 Day MA', 'Upper Band', 'Lower Band']].plot(figsize=(12,6))
+        plt.title(f"30 Tage Bollinger Band {data.getStock1()}" )
         plt.ylabel('Price (USD)')
         plt.show()
+
+
         
+    def volatilität(self,data):
+        startDate = data.getStartDate()
+        endDate = data.getEndDate()
+
+        start = dt.datetime(startDate[0], startDate[1], startDate[2])
+        end = dt.datetime(endDate[0], endDate[1], endDate[2])
+
+        style.use('ggplot')
+        df = web.DataReader(data.getStock1(), 'yahoo', start, end)
+
+        df['30_day_volatility'] = df['Close'].rolling(window=20).std()
+
+        df[['Adj Close', '30_day_volatility']].plot(figsize=(10,8))
+        plt.title(f"30 Tage Volatilität von {data.getStock1()}")
+        plt.ylabel('Price')
+        plt.show()
+
+
+
+
 
 
 
 
 if __name__ == "__main__":
-    sys.path.append("C:/Users/Yannic/OneDrive/Dokumente/Technische Hochschule Lübeck/Projekt Digitale Wirtschaft/diwi4/src/" + "basic_io")
-    #sys.path.append("C:/Users/Nils/Desktop/AllesMögliche/TH/5.Semester/DiWi/diwi4/src/" + "basic_io")
+    #sys.path.append("C:/Users/Yannic/OneDrive/Dokumente/Technische Hochschule Lübeck/Projekt Digitale Wirtschaft/diwi4/src/" + "basic_io")
+    sys.path.append("C:/Users/Nils/Desktop/AllesMögliche/TH/5.Semester/DiWi/diwi4/src/" + "basic_io")
     from basic_io import Input
     data = Input()
     data.setFirstStock("AAPL")
@@ -135,4 +158,5 @@ if __name__ == "__main__":
     #test.durchschnitt(data)
     #test.candlestick(data)
     test.bollinger(data)
-    #test.volume(data)
+    #test.volume(data)#
+    #test.volatilität(data)
