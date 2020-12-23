@@ -72,8 +72,26 @@ class Analyse:
         candlestick_ohlc(ax1, df_ohlc.values, width=4, colorup='g')
 
         plt.show()
-
         #print("Hallo")
+
+    def volume(self,data):
+        startDate = data.getStartDate()
+        endDate = data.getEndDate()
+
+        start = dt.datetime(startDate[0], startDate[1], startDate[2])
+        end = dt.datetime(endDate[0], endDate[1], endDate[2])
+
+        style.use('ggplot')
+        df = web.DataReader(data.getStock1(), 'yahoo', start, end)
+
+        print(df.head())
+
+        ax1 = plt.subplot2grid((6,1), (0,0), rowspan=5, colspan=1)
+        ax1.bar(df.index, df['Volume'])
+
+        plt.show()
+
+
         
         
 
@@ -90,4 +108,5 @@ if __name__ == "__main__":
     data.setEndDate("2020-12-12")
     test = Analyse()
     test.durchschnitt(data)
-    test.candlestick(data)
+    #test.candlestick(data)
+    #test.volume(data)
