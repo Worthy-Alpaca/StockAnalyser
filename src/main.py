@@ -222,7 +222,7 @@ class Mainframe:
     def open(self):
         filename = filedialog.askopenfilename(initialdir=config._path + "data",
                                               title="Select file", filetypes=(("JSON files", "*.json"), ("all files", "*.*")))
-        if filename is None:
+        if filename == None or filename == '':
             return
         with open(filename) as file:
             data = json.load(file)
