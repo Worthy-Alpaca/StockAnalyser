@@ -22,7 +22,7 @@ df = web.DataReader('GOOG', 'yahoo', start, end)
 #df['100ma'] = df['Adj Close'].rolling(window=100, min_periods=0).mean()        # 100 Average
 #df['38ma'] = df['Adj Close'].rolling(window=38, min_periods=0).mean()          # 38  Average
  
-class Analyse():
+class Analyse:
 
     def durchschnitt():
         style.use('ggplot')
