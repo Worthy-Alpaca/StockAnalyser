@@ -142,6 +142,32 @@ class Analyse:
         plt.show()
 
 
+    def dailyreturns(self,data):
+        startDate = data.getStartDate()
+        endDate = data.getEndDate()
+
+        start = dt.datetime(startDate[0], startDate[1], startDate[2])
+        end = dt.datetime(endDate[0], endDate[1], endDate[2])
+
+        style.use('ggplot')
+        #df = web.DataReader(data.getStock1(), 'yahoo', start, end)
+
+        df = pd.DataFrame()
+        assets = [data.getStock1(), data.getStock2()]
+
+        for stock in assets:
+            df[stock] = web.DataReader(stock,'yahoo', start, end)['Adj Close']
+
+        asset_returns_daily = df.pct_change()
+        asset_volatility_daily = asset_returns_daily.std()
+
+        asset_returns_daily.plot.hist(bins=50, figsize=(10,6));
+        plt.xlabel('Daily Returns')
+        plt.show()
+
+        
+
+
 
 
 
@@ -160,6 +186,7 @@ if __name__ == "__main__":
     test = Analyse()
     #test.durchschnitt(data)
     #test.candlestick(data)
-    test.bollinger(data)
+    #test.bollinger(data)
     #test.volume(data)#
     #test.volatilität(data)
+    #test.dailyreturns(data)
