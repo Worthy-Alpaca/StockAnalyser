@@ -26,13 +26,12 @@ class Analyse:
         return start, end """
 
 
-    def durchschnitt(self, data):
+    def durchschnitt(self, data, plot):
         startDate = data.getStartDate()
         endDate = data.getEndDate()
 
         start = dt.datetime(startDate[0], startDate[1], startDate[2])
         end = dt.datetime(endDate[0], endDate[1], endDate[2])
-        #test = self.parseData(data)
 
         df = web.DataReader(data.getStock1(), 'yahoo', start, end)
         style.use('ggplot')
@@ -42,16 +41,11 @@ class Analyse:
         df['38ma'] = df['Adj Close'].rolling(
             window=38, min_periods=0).mean()           # 38  Average
 
-        print(df.head())
+        plot.plot(df.index, df['Adj Close'])
+        plot.plot(df.index, df['100ma'])
+        plot.plot(df.index, df['38ma'])
 
-        ax1 = plt.subplot2grid((6, 1), (0, 0), rowspan=5, colspan=1)
-        ax1.plot(df.index, df['Adj Close'])
-        ax1.plot(df.index, df['100ma'])
-        ax1.plot(df.index, df['38ma'])
-
-        plt.show()
-
-    def candlestick(self,data):
+    def candlestick(self, data, plot):
         startDate = data.getStartDate()
         endDate = data.getEndDate()
 
@@ -65,16 +59,10 @@ class Analyse:
         df_ohlc.reset_index(inplace=True)
         df_ohlc['Date'] = df_ohlc['Date'].map(mdates.date2num)
 
-        print(df_ohlc.head)
+        plot.xaxis_date()
+        candlestick_ohlc(plot, df_ohlc.values, width=4, colorup='g')
 
-        ax1 = plt.subplot2grid((6,1), (0,0), rowspan=5, colspan=1)
-        ax1.xaxis_date()
-        candlestick_ohlc(ax1, df_ohlc.values, width=4, colorup='g')
-
-        plt.show()
-        #print("Hallo")
-
-    def volume(self,data):
+    def volume(self, data, plot):
         startDate = data.getStartDate()
         endDate = data.getEndDate()
 
@@ -83,15 +71,9 @@ class Analyse:
 
         style.use('ggplot')
         df = web.DataReader(data.getStock1(), 'yahoo', start, end)
+        plot.bar(df.index, df['Volume'])
 
-        print(df.head())
-
-        ax1 = plt.subplot2grid((6,1), (0,0), rowspan=5, colspan=1)
-        ax1.bar(df.index, df['Volume'])
-
-        plt.show()
-
-    def bollinger(self,data):
+    def bollinger(self, data, plot):
 
         #https://medium.com/python-data/setting-up-a-bollinger-band-with-python-28941e2fa300'
 
@@ -113,15 +95,14 @@ class Analyse:
         #Lower Band
         df['Lower Band'] = df['30 Day MA'] - (df['30 Day STD'] * 2)
         
-        df[['Adj Close', 'Upper Band', 'Lower Band']].plot(figsize=(12,6))
+        plot.plot(df[['Adj Close', 'Upper Band', 'Lower Band']])
         #df[['Adj Close', '30 Day MA', 'Upper Band', 'Lower Band']].plot(figsize=(12,6))
-        plt.title(f"30 Tage Bollinger Band {data.getStock1()}" )
-        plt.ylabel('Price (USD)')
-        plt.show()
+        plot.set_title(f"30 Tage Bollinger Band {data.getStock1()}")
+        plot.set_ylabel('Price (USD)')
 
 
         
-    def volatilität(self,data):
+    def volatilität(self,data, plot):
 
         #https://medium.com/python-data/time-series-aggregation-techniques-with-python-a-look-at-major-cryptocurrencies-a9eb1dd49c1b
 
@@ -136,10 +117,9 @@ class Analyse:
 
         df['30_day_volatility'] = df['Close'].rolling(window=20).std()
 
-        df[['Adj Close', '30_day_volatility']].plot(figsize=(10,8))
-        plt.title(f"30 Tage Volatilität von {data.getStock1()}")
-        plt.ylabel('Price')
-        plt.show()
+        plot.plot(df[['Adj Close', '30_day_volatility']])
+        plot.set_title(f"30 Tage Volatilität von {data.getStock1()}")
+        plot.set_ylabel('Price')
 
 
     def dailyreturns(self,data):
