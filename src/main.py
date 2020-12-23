@@ -7,7 +7,7 @@ Interface
 
 """ Importing dummy classes """
 from basic_io.basic_io import Input
-from dummy.charts import DummyCharts
+from Model.analyse import Analyse
 
 """ import config """
 import config
@@ -18,7 +18,7 @@ import tkinter as tk
 from tkinter import filedialog, ttk
 from tkcalendar import Calendar
 # import matplotlib
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
 from matplotlib import pyplot as plt
 # import additional modules
@@ -78,7 +78,8 @@ class Mainframe:
            self.mainframe, text="Plot options").grid(row=0, column=6)
 
         OptionList = [
-            "Chartanalyse"
+            "Durchschnitt", 
+            "Candlestick"
         ]
 
         self.variable = tk.StringVar(self.mainframe)
@@ -101,7 +102,7 @@ class Mainframe:
 
     """ @description: dummy function that does nothing """
     def donothing(self):
-       print(str(self.calDate1))
+       print(self.variable.get())
        print(self.calDate2)
 
     def showCal1(self):
@@ -146,21 +147,32 @@ class Mainframe:
     def plotGraph(self):
         data = self.parseInput()
         #print(data.getAllData())
-        test = DummyCharts().chart(data, self.figure)
-        #print(test)
+        #test = DummyCharts().chart(data, self.figure)
+        chart = Analyse()
+        choice = self.variable.get()
+        """ if choice.lower() == "durchschnitt":
+            chart.durchschnitt(data)
+        elif choice.lower() == "candlestick":
+            print(chart.candlestick(data)) """
+
+        # adding the subplot
+        plot = self.figure.add_subplot(111)
+        #chart.durchschnitt(data, plot)
         # refresh the canvas
         self.canvas.draw()
        
     """ @description: create the chart foundation """
     def setFigure(self):
         self.figure = Figure(figsize=(11.6, 6.5), dpi=100)
-        self.canvas = FigureCanvasTkAgg(self.figure, self.mainframe)
+        self.canvas = FigureCanvasTkAgg(self.figure, master=self.mainframe)
         self.canvas.draw()
         self.canvas.get_tk_widget().grid(
             row=2, column=0, columnspan=10, rowspan=10, padx=(20, 20))
-        #self.toolbar = NavigationToolbar2Tk(self.canvas, self.mainframe)
-        #self.toolbar.update()
-        #self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+        self.toolbar = NavigationToolbar2Tk(self.canvas, self.mainframe, pack_toolbar=False)
+        self.toolbar.update()
+        self.canvas.get_tk_widget().grid(
+            row=5, column=0, columnspan=10, rowspan=10, padx=(20, 20))
+        #self.toolbar = NavigationToolbar2Tk()
         
     """ @description: function to clear all inputs """
     def new(self):
