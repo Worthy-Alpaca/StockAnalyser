@@ -113,8 +113,7 @@ class Mainframe:
                 self.mainframe, text=self.calDate1).grid(row=1, column=3)
 
         self.cal = Calendar(self.top,
-                   font="Arial 14", selectmode='day',
-                   cursor="hand1")
+                   font="Arial 14", selectmode='day')
         self.cal.pack(fill="both", expand=True)
         ttk.Button(self.top, text="ok", command=getDate).pack()
 
@@ -128,8 +127,7 @@ class Mainframe:
                 self.mainframe, text=self.calDate2).grid(row=1, column=5)
 
         self.cal2 = Calendar(self.top,
-                            font="Arial 14", selectmode='day',
-                            cursor="hand1")
+                            font="Arial 14", selectmode='day')
         self.cal2.pack(fill="both", expand=True)
         ttk.Button(self.top, text="ok", command=getDate).pack()
 
