@@ -157,7 +157,7 @@ class Mainframe:
 
         # adding the subplot
         plot = self.figure.add_subplot(111)
-        #chart.durchschnitt(data, plot)
+        #chart.bollinger(data, plot)
         # refresh the canvas
         self.canvas.draw()
        
@@ -170,8 +170,8 @@ class Mainframe:
             row=2, column=0, columnspan=10, rowspan=10, padx=(20, 20))
         self.toolbar = NavigationToolbar2Tk(self.canvas, self.mainframe, pack_toolbar=False)
         self.toolbar.update()
-        self.canvas.get_tk_widget().grid(
-            row=5, column=0, columnspan=10, rowspan=10, padx=(20, 20))
+        self.toolbar.grid(
+            row=10, column=0, columnspan=10, rowspan=10, padx=(20, 20))
         #self.toolbar = NavigationToolbar2Tk()
         
     """ @description: function to clear all inputs """
