@@ -7,7 +7,7 @@ Interface
 
 """ Importing dummy classes """
 from basic_io.basic_io import Input
-from dummy.charts import DummyCharts
+#from dummy.charts import DummyCharts
 
 """ import config """
 import config
@@ -15,7 +15,8 @@ import config
 """ Importing packages """
 # import tkinter
 import tkinter as tk
-from tkinter import filedialog
+from tkinter import filedialog, ttk
+from tkcalendar import Calendar
 # import matplotlib
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
@@ -28,8 +29,14 @@ class Mainframe:
         self.mainframe.title("STONKS analysis")
         self.mainframe.geometry("1200x700")
 
+        self.calDate1 = None
+        self.calDate2 = None
+        self.dateLabel1 = tk.Label(self.mainframe).grid(row=1, column=3)
+        self.dateLabel2 = tk.Label(self.mainframe).grid(row=1, column=5)
+
         self.createMenu()
         self.createButton(8, 0, "Plot", self.plotGraph)
+        self.createButton(8, 1, "test", self.donothing)
         self.createForms()
         self.setFigure()
         
@@ -81,31 +88,66 @@ class Mainframe:
         self.stock1.grid(row=0, column=1)
         self.stock2 = tk.Entry(self.mainframe)
         self.stock2.grid(row=1, column=1)
-        self.date1 = tk.Entry(self.mainframe)
+        #self.date1 = tk.Entry(self.mainframe)
+        self.date1 = tk.Button(
+            master=self.mainframe, height=1, width=10, text="Select", command=lambda: self.showCal1())
         self.date1.grid(row=0, column=3)
-        self.date2 = tk.Entry(self.mainframe)
+        #self.date2 = tk.Entry(self.mainframe)
+        self.date2 = tk.Button(
+            master=self.mainframe, height=1, width=10, text="Select", command=lambda: self.showCal2())
         self.date2.grid(row=0, column=5)
         self.option = tk.OptionMenu(self.mainframe, self.variable, *OptionList)
         self.option.grid(row=0, column=7)
 
     """ @description: dummy function that does nothing """
     def donothing(self):
-       pass
+       print(str(self.calDate1))
+       print(self.calDate2)
+
+    def showCal1(self):
+        self.top = tk.Toplevel(self.mainframe)
+        def getDate():
+            self.top.withdraw()
+            self.calDate1 = self.cal.selection_get()
+            self.dateLabel1 = tk.Label(
+                self.mainframe, text=self.calDate1).grid(row=1, column=3)
+
+        self.cal = Calendar(self.top,
+                   font="Arial 14", selectmode='day',
+                   cursor="hand1")
+        self.cal.pack(fill="both", expand=True)
+        ttk.Button(self.top, text="ok", command=getDate).pack()
+
+    def showCal2(self):
+        self.top = tk.Toplevel(self.mainframe)
+
+        def getDate():
+            self.top.withdraw()
+            self.calDate2 = self.cal2.selection_get()
+            self.dateLabel2 = tk.Label(
+                self.mainframe, text=self.calDate2).grid(row=1, column=5)
+
+        self.cal2 = Calendar(self.top,
+                            font="Arial 14", selectmode='day',
+                            cursor="hand1")
+        self.cal2.pack(fill="both", expand=True)
+        ttk.Button(self.top, text="ok", command=getDate).pack()
 
     """ @description: read all inputs and return as object """
     def parseInput(self):
         data = Input()
-        data.setFirstStock(str(self.stock1.get()), self.stock1)
-        data.setSecondStock(str(self.stock2.get()), self.stock2)
-        data.setStartDate(str(self.date1.get()))
-        data.setEndDate(str(self.date2.get()))
+        data.setFirstStock(str(self.stock1.get()))
+        data.setSecondStock(str(self.stock2.get()))
+        data.setStartDate(str(self.calDate1))
+        data.setEndDate(str(self.calDate2))
         return data
 
     """ @description: function that initiates the calculations """
     def plotGraph(self):
         data = self.parseInput()
-        test = DummyCharts().chart(data, self.figure)
-        print(test)
+        print(data.getAllData())
+        #test = DummyCharts().chart(data, self.figure)
+        #print(test)
         # refresh the canvas
         self.canvas.draw()
        
@@ -124,8 +166,6 @@ class Mainframe:
     def new(self):
         self.stock1.delete(0, 'end')
         self.stock2.delete(0, 'end')
-        self.date1.delete(0, 'end')
-        self.date2.delete(0, 'end')
 
     """ @description: function to save the current inputs to a JSON """
     def saveAs(self):
@@ -140,8 +180,8 @@ class Mainframe:
         data = {
             "stock1": str(self.stock1.get()),
             "stock2": str(self.stock2.get()),
-            "date1": str(self.date1.get()),
-            "date2": str(self.date2.get())
+            "date1": str(self.calDate1),
+            "date2": str(self.calDate2)
         }
         json.dump(data, filename)
 
@@ -171,8 +211,16 @@ class Mainframe:
         self.new()
         self.stock1.insert(0, data["stock1"])
         self.stock2.insert(0, data["stock2"])
-        self.date1.insert(0, data["date1"])
-        self.date2.insert(0, data["date2"])        
+        #self.date1.insert(0, data["date1"])
+        #self.date2.insert(0, data["date2"]) 
+        self.calDate1 = data["date1"]
+        self.calDate2 = data["date2"]
+        self.dateLabel1 = tk.Label(
+            self.mainframe, text=self.calDate1).grid(row=1, column=3)
+
+        self.calDate2 = data["date2"]
+        self.dateLabel2 = tk.Label(
+            self.mainframe, text=self.calDate2).grid(row=1, column=5)
 
     """ @description: function to close the GUI """
     def close(self):
