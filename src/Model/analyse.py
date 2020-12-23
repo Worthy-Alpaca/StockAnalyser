@@ -46,13 +46,27 @@ class Analyse:
 
         plt.show()
 
+    def candlestick(self,data):
+        startDate = data.getStartDate()
+        endDate = data.getEndDate()
+
+        start = dt.datetime(startDate[0], startDate[1], startDate[2])
+        end = dt.datetime(endDate[0], endDate[1], endDate[2])
+        print("Hallo")
+        
+        
+
+
 
 if __name__ == "__main__":
-    sys.path.append("hier _path aus config.py ein setzen" + "basic_io")
+    #sys.path.append("C:/Users/Yannic/OneDrive/Dokumente/Technische Hochschule Lübeck/Projekt Digitale Wirtschaft/diwi4/src/" + "basic_io")
+    sys.path.append("C:/Users/Yannic/OneDrive/Dokumente/Technische Hochschule Lübeck/Projekt Digitale Wirtschaft/diwi4/src/" + "basic_io")
     from basic_io import Input
     data = Input()
     data.setFirstStock("AAPL")
     data.setSecondStock("GOOGL")
     data.setStartDate("2012-12-12")
     data.setEndDate("2020-12-12")
-    test = Analyse().durchschnitt(data)
+    test = Analyse()
+    test.durchschnitt(data)
+    test.candlestick(data)
