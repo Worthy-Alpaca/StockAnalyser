@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt     # erlaupt zu plotten
 from matplotlib import style        # so sieht es besser aus
 import pandas as pd
 import pandas_datareader.data as web
-from basic_io.basic_io import Input
+import sys
 
 class Analyse:
     def __init__(self):
@@ -46,7 +46,10 @@ class Analyse:
 
         plt.show()
 
+
 if __name__ == "__main__":
+    sys.path.append("hier _path aus config.py ein setzen" + "basic_io")
+    from basic_io import Input
     data = Input()
     data.setFirstStock("AAPL")
     data.setSecondStock("GOOGL")
