@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt     # erlaupt zu plotten
 from matplotlib import style        # so sieht es besser aus
 import pandas as pd
 import pandas_datareader.data as web
+from basic_io.basic_io import Input
 
 class Analyse:
     def __init__(self):
@@ -44,3 +45,11 @@ class Analyse:
         ax1.plot(df.index, df['38ma'])
 
         plt.show()
+
+if __name__ == "__main__":
+    data = Input()
+    data.setFirstStock("AAPL")
+    data.setSecondStock("GOOGL")
+    data.setStartDate("2012-12-12")
+    data.setEndDate("2020-12-12")
+    test = Analyse().durchschnitt(data)
