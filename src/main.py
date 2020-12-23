@@ -7,7 +7,7 @@ Interface
 
 """ Importing dummy classes """
 from basic_io.basic_io import Input
-#from dummy.charts import DummyCharts
+from dummy.charts import DummyCharts
 
 """ import config """
 import config
@@ -145,8 +145,8 @@ class Mainframe:
     """ @description: function that initiates the calculations """
     def plotGraph(self):
         data = self.parseInput()
-        print(data.getAllData())
-        #test = DummyCharts().chart(data, self.figure)
+        #print(data.getAllData())
+        test = DummyCharts().chart(data, self.figure)
         #print(test)
         # refresh the canvas
         self.canvas.draw()
