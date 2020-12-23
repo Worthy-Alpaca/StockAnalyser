@@ -113,7 +113,19 @@ class Analyse:
         plt.xlabel('Daily Returns')
         plt.show()
 
+    
+    def macd(self,data):
+        startDate = data.getStartDate()
+        endDate = data.getEndDate()
+
+        start = dt.datetime(startDate[0], startDate[1], startDate[2])
+        end = dt.datetime(endDate[0], endDate[1], endDate[2])
+
+        style.use('ggplot')
+        df = web.DataReader(data.getStock1(), 'yahoo', start, end)
+
         
+        print(df)
 
 
 
@@ -126,6 +138,8 @@ if __name__ == "__main__":
     #sys.path.append("C:/Users/Yannic/OneDrive/Dokumente/Technische Hochschule Lübeck/Projekt Digitale Wirtschaft/diwi4/src/" + "basic_io")
     #sys.path.append("C:/Users/Nils/Desktop/AllesMögliche/TH/5.Semester/DiWi/diwi4/src/" + "basic_io")
     sys.path.append("C:/Users/Stephan/source/repos/diwi4/src/" + "basic_io")
+    sys.path.append("C:/Users/Yannic/OneDrive/Dokumente/Technische Hochschule Lübeck/Projekt Digitale Wirtschaft/diwi4/src/" + "basic_io")
+    #sys.path.append("C:/Users/Nils/Desktop/AllesMögliche/TH/5.Semester/DiWi/diwi4/src/" + "basic_io")
     from basic_io import Input
     data = Input()
     data.setFirstStock("AAPL")
