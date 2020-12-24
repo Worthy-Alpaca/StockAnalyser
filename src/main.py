@@ -5,7 +5,7 @@ Created on 05.12.2020
 Interface
 """
 
-""" Importing dummy classes """
+""" Importing classes """
 from basic_io.basic_io import Input
 from Model.analyse import Analyse
 
