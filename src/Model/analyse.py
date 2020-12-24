@@ -84,6 +84,7 @@ class Analyse:
         #df[['Adj Close', '30 Day MA', 'Upper Band', 'Lower Band']].plot(figsize=(12,6))
         plot.set_title(f"30 Tage Bollinger Band {data.getStock1()}")
         plot.set_ylabel('Price (USD)')
+        plot.legend(( '30 Day STD','Upper Band', 'Lower Band'),loc='upper left')
 
     def volatilität(self, data, plot):
 
@@ -141,7 +142,7 @@ if __name__ == "__main__":
     #sys.path.append("C:/Users/Yannic/OneDrive/Dokumente/Technische Hochschule Lübeck/Projekt Digitale Wirtschaft/diwi4/src/" + "basic_io")
     #sys.path.append("C:/Users/Nils/Desktop/AllesMögliche/TH/5.Semester/DiWi/diwi4/src/" + "basic_io")
     #sys.path.append("C:/Users/Stephan/source/repos/diwi4/src/" + "basic_io")
-    #sys.path.append("C:/Users/Yannic/OneDrive/Dokumente/Technische Hochschule Lübeck/Projekt Digitale Wirtschaft/diwi4/src/" + "basic_io")
+    sys.path.append("C:/Users/Yannic/OneDrive/Dokumente/Technische Hochschule Lübeck/Projekt Digitale Wirtschaft/diwi4/src/" + "basic_io")
     #sys.path.append("C:/Users/Nils/Desktop/AllesMögliche/TH/5.Semester/DiWi/diwi4/src/" + "basic_io")
     from basic_io import Input
     data = Input()
@@ -151,9 +152,9 @@ if __name__ == "__main__":
     data.setEndDate("2020-12-12")
     plot = plt.subplot2grid((6, 1), (0, 0), rowspan=5, colspan=1)
     test = Analyse()
-    test.durchschnitt(data, plot)
+    #test.durchschnitt(data, plot)
     #test.candlestick(data, plot)
-    #test.bollinger(data, plot)
+    test.bollinger(data, plot)
     #test.volume(data, plot)
     #test.volatilität(data, plot)
     #test.dailyreturns(data)
