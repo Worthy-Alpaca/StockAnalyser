@@ -44,6 +44,7 @@ class Analyse:
 
         plot.set_title(f"30 & 100 Tage gleitender Durchschnitt von {data.getStock1()}")
         plot.set_ylabel('Price')
+        plot.legend(( 'Adj Close', '100ma' ,'38ma'),loc='upper left')
 
     def candlestick(self, data, plot):
 
@@ -142,7 +143,7 @@ if __name__ == "__main__":
     #sys.path.append("C:/Users/Yannic/OneDrive/Dokumente/Technische Hochschule Lübeck/Projekt Digitale Wirtschaft/diwi4/src/" + "basic_io")
     #sys.path.append("C:/Users/Nils/Desktop/AllesMögliche/TH/5.Semester/DiWi/diwi4/src/" + "basic_io")
     #sys.path.append("C:/Users/Stephan/source/repos/diwi4/src/" + "basic_io")
-    sys.path.append("C:/Users/Yannic/OneDrive/Dokumente/Technische Hochschule Lübeck/Projekt Digitale Wirtschaft/diwi4/src/" + "basic_io")
+    #sys.path.append("C:/Users/Yannic/OneDrive/Dokumente/Technische Hochschule Lübeck/Projekt Digitale Wirtschaft/diwi4/src/" + "basic_io")
     #sys.path.append("C:/Users/Nils/Desktop/AllesMögliche/TH/5.Semester/DiWi/diwi4/src/" + "basic_io")
     from basic_io import Input
     data = Input()
@@ -154,7 +155,7 @@ if __name__ == "__main__":
     test = Analyse()
     #test.durchschnitt(data, plot)
     #test.candlestick(data, plot)
-    test.bollinger(data, plot)
+    #test.bollinger(data, plot)
     #test.volume(data, plot)
     #test.volatilität(data, plot)
     #test.dailyreturns(data)
