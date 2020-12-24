@@ -35,14 +35,15 @@ class Analyse:
         df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
         style.use('ggplot')
 
-        df['100ma'] = df['Adj Close'].rolling(
-            window=100, min_periods=0).mean()        # 100 Average
-        df['38ma'] = df['Adj Close'].rolling(
-            window=38, min_periods=0).mean()           # 38  Average
+        df['100ma'] = df['Adj Close'].rolling(window=100, min_periods=0).mean()        # 100 Average
+        df['38ma'] = df['Adj Close'].rolling(window=38, min_periods=0).mean()           # 38  Average
 
         plot.plot(df.index, df['Adj Close'])
         plot.plot(df.index, df['100ma'])
         plot.plot(df.index, df['38ma'])
+
+        plot.set_title(f"30 & 100 Tage gleitender Durchschnitt von {data.getStock1()}")
+        plot.set_ylabel('Price')
 
     def candlestick(self, data, plot):
 
@@ -54,6 +55,8 @@ class Analyse:
         df_ohlc['Date'] = df_ohlc['Date'].map(mdates.date2num)
 
         plot.xaxis_date()
+        plot.set_title(f"Candlesticks von {data.getStock1()}")
+        plot.set_ylabel('Price')
         candlestick_ohlc(plot, df_ohlc.values, width=4, colorup='g')
 
     def volume(self, data, plot):
@@ -137,8 +140,8 @@ class Analyse:
 if __name__ == "__main__":
     #sys.path.append("C:/Users/Yannic/OneDrive/Dokumente/Technische Hochschule Lübeck/Projekt Digitale Wirtschaft/diwi4/src/" + "basic_io")
     #sys.path.append("C:/Users/Nils/Desktop/AllesMögliche/TH/5.Semester/DiWi/diwi4/src/" + "basic_io")
-    sys.path.append("C:/Users/Stephan/source/repos/diwi4/src/" + "basic_io")
-    sys.path.append("C:/Users/Yannic/OneDrive/Dokumente/Technische Hochschule Lübeck/Projekt Digitale Wirtschaft/diwi4/src/" + "basic_io")
+    #sys.path.append("C:/Users/Stephan/source/repos/diwi4/src/" + "basic_io")
+    #sys.path.append("C:/Users/Yannic/OneDrive/Dokumente/Technische Hochschule Lübeck/Projekt Digitale Wirtschaft/diwi4/src/" + "basic_io")
     #sys.path.append("C:/Users/Nils/Desktop/AllesMögliche/TH/5.Semester/DiWi/diwi4/src/" + "basic_io")
     from basic_io import Input
     data = Input()
@@ -148,7 +151,7 @@ if __name__ == "__main__":
     data.setEndDate("2020-12-12")
     plot = plt.subplot2grid((6, 1), (0, 0), rowspan=5, colspan=1)
     test = Analyse()
-    #test.durchschnitt(data, plot)
+    test.durchschnitt(data, plot)
     #test.candlestick(data, plot)
     #test.bollinger(data, plot)
     #test.volume(data, plot)
