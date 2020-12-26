@@ -6,8 +6,8 @@ Analyse
 """
 
 import datetime as dt
-import matplotlib.pyplot as plt     # erlaupt zu plotten
-from matplotlib import style        # so sieht es besser aus
+import matplotlib.pyplot as plt
+from matplotlib import style
 import pandas as pd
 import pandas_datareader.data as web
 import sys
