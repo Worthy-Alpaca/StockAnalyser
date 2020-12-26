@@ -82,7 +82,6 @@ class Analyse:
         df['Lower Band'] = df['30 Day MA'] - (df['30 Day STD'] * 2)
         
         plot.plot(df[['Adj Close', 'Upper Band', 'Lower Band']])
-        #df[['Adj Close', '30 Day MA', 'Upper Band', 'Lower Band']].plot(figsize=(12,6))
         plot.set_title(f"30 Tage Bollinger Band {data.getStock1()}")
         plot.set_ylabel('Price (USD)')
         plot.legend(( '30 Day STD','Upper Band', 'Lower Band'),loc='upper left')
@@ -103,7 +102,6 @@ class Analyse:
 
     def dailyreturns(self,data):
         style.use('ggplot')
-        #df = web.DataReader(data.getStock1(), 'yahoo', start, end)
 
         df = pd.DataFrame()
         assets = [data.getStock1(), data.getStock2()]
