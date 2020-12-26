@@ -99,11 +99,9 @@ class Mainframe:
         self.stock1.grid(row=0, column=1)
         self.stock2 = tk.Entry(self.mainframe)
         self.stock2.grid(row=1, column=1)
-        #self.date1 = tk.Entry(self.mainframe)
         self.date1 = tk.Button(
             master=self.mainframe, height=1, width=10, text="Select", command=lambda: self.showCal1())
         self.date1.grid(row=0, column=3)
-        #self.date2 = tk.Entry(self.mainframe)
         self.date2 = tk.Button(
             master=self.mainframe, height=1, width=10, text="Select", command=lambda: self.showCal2())
         self.date2.grid(row=0, column=5)
@@ -214,8 +212,6 @@ class Mainframe:
         self.new()
         self.stock1.insert(0, data["stock1"])
         self.stock2.insert(0, data["stock2"])
-        #self.date1.insert(0, data["date1"])
-        #self.date2.insert(0, data["date2"]) 
         self.calDate1 = data["date1"]
         self.calDate2 = data["date2"]
         self.dateLabel1 = tk.Label(
