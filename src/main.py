@@ -51,8 +51,6 @@ class Mainframe:
        filemenu.add_command(label="Save as...", command=self.saveAs)
        filemenu.add_command(label="Close", command=self.close)
        filemenu.add_separator()
-       filemenu.add_command(label="Save Chart", command=self.saveChart)
-       filemenu.add_separator()
 
        filemenu.add_command(label="Exit", command=self.close)
        menubar.add_cascade(label="File", menu=filemenu)
@@ -66,7 +64,7 @@ class Mainframe:
        self.button.grid(row=posY, column=posX, padx=(30, 0))
 
     def method_finder(self, classname):
-        non_magic_class = []
+        methods = []
         class_methods = dir(classname)
         for m in class_methods:
             if m.startswith('__'):
@@ -74,9 +72,9 @@ class Mainframe:
             elif m.startswith('parseDate'):
                 continue
             else:
-                non_magic_class.append(m)
+                methods.append(m)
 
-        return non_magic_class
+        return methods
 
     """ @description: method that creates the inputs """
     def createForms(self):
@@ -203,20 +201,6 @@ class Mainframe:
             "date2": str(self.calDate2)
         }
         json.dump(data, filename)
-
-    """ @description: function to save the current chart as a PNG """
-    """ CURRENTLY NOT WORKING """
-    def saveChart(self):
-        return 
-        file_opt = options = {}
-        options['filetypes'] = [('Chart files', '.png'), ('all files', '.*')]
-        options['initialdir'] = config._path + "data"
-
-        filename = filedialog.asksaveasfile(defaultextension=".png", **file_opt)
-        if filename is None:
-            return
-
-        plt.saveas(self.figure, filename)
 
     """ @description: function to open an existing JSON and load it to the GUI """
     def open(self):
