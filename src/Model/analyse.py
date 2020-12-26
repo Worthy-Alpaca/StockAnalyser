@@ -147,7 +147,7 @@ if __name__ == "__main__":
     data = Input()
     data.setFirstStock("AAPL")
     data.setSecondStock("GOOGL")
-    data.setStartDate("2018-12-12")
+    data.setStartDate("2010-12-12")
     data.setEndDate("2020-12-12")
     plot = plt.subplot2grid((6, 1), (0, 0), rowspan=5, colspan=1)
     test = Analyse()
