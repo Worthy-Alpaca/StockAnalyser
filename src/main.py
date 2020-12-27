@@ -157,6 +157,7 @@ class Mainframe:
         choice = [self.variable.get().lower()]
         # clearing the subplot
         self.plot.cla() 
+        self.plot.set_ylabel("Price in USD")
         # executing the function dynamically       
         for c in choice:
             getattr(chart, c)(data, self.plot)
