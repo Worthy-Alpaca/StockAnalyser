@@ -45,6 +45,11 @@ class Analyse:
         plot.set_title(f"30 & 100 Tage gleitender Durchschnitt von {data.getStock1()}")
         plot.legend(( 'Adj Close', '100ma' ,'38ma'),loc='upper left')
 
+    def plainData(self, data, plot):
+        df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))["Adj Close"]
+        style.use('ggplot')
+        plot.plot(df)
+
     def candlestick(self, data, plot):
 
         style.use('ggplot')
