@@ -43,7 +43,6 @@ class Analyse:
         plot.plot(df.index, df['38ma'])
 
         plot.set_title(f"30 & 100 Tage gleitender Durchschnitt von {data.getStock1()}")
-        plot.set_ylabel('Price')
         plot.legend(( 'Adj Close', '100ma' ,'38ma'),loc='upper left')
 
     def candlestick(self, data, plot):
@@ -57,7 +56,6 @@ class Analyse:
 
         plot.xaxis_date()
         plot.set_title(f"Candlesticks von {data.getStock1()}")
-        plot.set_ylabel('Price')
         candlestick_ohlc(plot, df_ohlc.values, width=4, colorup='g')
 
     def volume(self, data, plot):
@@ -83,7 +81,6 @@ class Analyse:
         
         plot.plot(df[['Adj Close', 'Upper Band', 'Lower Band']])
         plot.set_title(f"30 Tage Bollinger Band {data.getStock1()}")
-        plot.set_ylabel('Price (USD)')
         plot.legend(( '30 Day STD','Upper Band', 'Lower Band'),loc='upper left')
 
     def volatilität(self, data, plot):
@@ -97,10 +94,9 @@ class Analyse:
 
         plot.plot(df[['Adj Close', '30_day_volatility']])
         plot.set_title(f"30 Tage Volatilität von {data.getStock1()}")
-        plot.set_ylabel('Price')
 
 
-    def dailyreturns(self,data):
+    def dailyreturns(self, data, plot):
         style.use('ggplot')
 
         df = pd.DataFrame()
@@ -110,11 +106,10 @@ class Analyse:
             df[stock] = web.DataReader(stock, 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))['Adj Close']
 
         asset_returns_daily = df.pct_change()
-        asset_volatility_daily = asset_returns_daily.std()
-
-        asset_returns_daily.plot.hist(bins=50, figsize=(10,6));
-        plt.xlabel('Daily Returns')
-        plt.show()
+        #asset_volatility_daily = asset_returns_daily.std()
+        
+        plot.plot(asset_returns_daily)
+        plot.set_title(f"Daily returns von {data.getStock1()}")
 
     
     def macd(self,data):
@@ -130,7 +125,7 @@ class Analyse:
         #print(df)
 
     def risk(self, data, plot):
-
+        """ mit dailyreturns vergleichen da funktionen die gleichen sind """
         style.use('ggplot')
         #https://medium.com/python-data/assessing-the-riskiness-of-a-single-stock-in-python-12f2c5bb85b2
 
@@ -145,9 +140,8 @@ class Analyse:
         asset_volatility_daily = asset_returns_daily.std()
 
         asset_volatility_daily.plot.hist(bins=50, figsize=(10,6));
-        plt.xlabel('Risiko')
-        plt.set_title(f"Risiko von {data.getStock1()} und {data.getStock2()}")
-        plt.show()
+        plot.set_xlabel('Risiko')
+        plot.set_title(f"Risiko von {data.getStock1()} und {data.getStock2()}")
         #print("Hello")
         #plot(df())
         #plot.plot(df[['Adj Close', 'Upper Band', 'Lower Band']])
@@ -187,11 +181,10 @@ class Analyse:
         RSI2 = 100.0 - (100.0 / (1.0 + RS2))
 
         # Compare graphically
-        plt.figure(figsize=(8, 6))
-        RSI1.plot()
-        RSI2.plot()
-        plt.legend(['RSI via EWMA', 'RSI via SMA'])
-        plt.show()   
+        plot.plot(RSI1)
+        plot.plot(RSI2)
+        plot.legend(['RSI via EWMA', 'RSI via SMA'])
+        plot.set_ylabel("Something something")
 
 
      
