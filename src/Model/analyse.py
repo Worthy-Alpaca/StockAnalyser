@@ -127,8 +127,7 @@ class Analyse:
         style.use('ggplot')
         df = web.DataReader(data.getStock1(), 'yahoo', start, end)
 
-        
-        print(df)
+        #print(df)
 
     def risk(self, data, plot):
 
@@ -159,6 +158,7 @@ class Analyse:
         #https://stackoverflow.com/questions/20526414/relative-strength-index-in-python-pandas
 
         style.use('ggplot')
+        window_length = 14
 
         df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
         close = df['Adj Close']
@@ -188,14 +188,13 @@ class Analyse:
 
         # Compare graphically
         plt.figure(figsize=(8, 6))
-        #RSI1.plot()
+        RSI1.plot()
         RSI2.plot()
         plt.legend(['RSI via EWMA', 'RSI via SMA'])
         plt.show()   
 
 
-
-        
+     
 
 
 
