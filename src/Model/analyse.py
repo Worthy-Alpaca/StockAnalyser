@@ -130,6 +130,31 @@ class Analyse:
         
         print(df)
 
+    def risk(self, data, plot):
+
+        style.use('ggplot')
+        #https://medium.com/python-data/assessing-the-riskiness-of-a-single-stock-in-python-12f2c5bb85b2
+
+        
+        assets = [data.getStock1(), data.getStock2()]
+        df = pd.DataFrame()
+        
+        for stock in assets:
+            df[stock] = web.DataReader(stock, 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))['Adj Close']
+
+        asset_returns_daily = df.pct_change()
+        asset_volatility_daily = asset_returns_daily.std()
+
+        asset_volatility_daily.plot.hist(bins=50, figsize=(10,6));
+        plt.xlabel('Risiko')
+        plt.set_title(f"Risiko von {data.getStock1()} und {data.getStock2()}")
+        plt.show()
+        #print("Hello")
+        #plot(df())
+        #plot.plot(df[['Adj Close', 'Upper Band', 'Lower Band']])
+        
+
+
 
 
 
@@ -157,4 +182,5 @@ if __name__ == "__main__":
     #test.volume(data, plot)
     #test.volatilität(data, plot)
     #test.dailyreturns(data)
+    #test.risk(data, plot) #muss noch optimiert werden
     plt.show()
