@@ -152,6 +152,49 @@ class Analyse:
         #print("Hello")
         #plot(df())
         #plot.plot(df[['Adj Close', 'Upper Band', 'Lower Band']])
+
+    
+    def rsi(self, data, plot):
+
+        #https://stackoverflow.com/questions/20526414/relative-strength-index-in-python-pandas
+
+        style.use('ggplot')
+
+        df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
+        close = df['Adj Close']
+
+        delta = close.diff()
+        delta = delta[1:]
+
+        up, down = delta.copy(), delta.copy()
+        up[up < 0] = 0
+        down[down > 0] = 0
+
+        # Calculate the EWMA
+        roll_up1 = up.ewm(span=window_length).mean()
+        roll_down1 = down.abs().ewm(span=window_length).mean()
+
+        # Calculate the RSI based on EWMA
+        RS1 = roll_up1 / roll_down1
+        RSI1 = 100.0 - (100.0 / (1.0 + RS1))
+
+        # Calculate the SMA
+        roll_up2 = up.rolling(window_length).mean()
+        roll_down2 = down.abs().rolling(window_length).mean()
+
+        # Calculate the RSI based on SMA
+        RS2 = roll_up2 / roll_down2
+        RSI2 = 100.0 - (100.0 / (1.0 + RS2))
+
+        # Compare graphically
+        plt.figure(figsize=(8, 6))
+        #RSI1.plot()
+        RSI2.plot()
+        plt.legend(['RSI via EWMA', 'RSI via SMA'])
+        plt.show()   
+
+
+
         
 
 
