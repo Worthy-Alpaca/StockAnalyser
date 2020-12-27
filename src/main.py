@@ -37,7 +37,7 @@ class Mainframe:
 
         self.createMenu()
         self.createButton(8, 0, "Plot", self.plotGraph)
-        self.createButton(8, 1, "test", self.donothing)
+        self.createButton(8, 1, "Plain Data", self.plainData)
         self.createForms()
         self.setFigure()
         
@@ -155,6 +155,7 @@ class Mainframe:
         data = self.parseInput()
         chart = Analyse()
         choice = [self.variable.get().lower()]
+        #choice = ["volatilität", "bollinger"]
         # clearing the subplot
         self.plot.cla() 
         self.plot.set_ylabel("Price in USD")
@@ -162,6 +163,17 @@ class Mainframe:
         for c in choice:
             getattr(chart, c)(data, self.plot)
         
+        # refresh the canvas
+        self.canvas.draw()
+
+    def plainData(self):
+        data = self.parseInput()
+        chart = Analyse()
+        # clearing the subplot
+        self.plot.cla()
+        self.plot.set_ylabel("Price in USD")
+        # executing the function dynamically
+        chart.plainData(data, self.plot)
         # refresh the canvas
         self.canvas.draw()
        
