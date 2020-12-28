@@ -193,9 +193,14 @@ class Analyse:
         plot.legend(['RSI via EWMA', 'RSI via SMA'])
         plot.set_ylabel("Something something")
 
+    def adx(self, data, plot):
+        #gibt die Stärke eines Trendes an
+        style.use('ggplot')
+        df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
 
-     
-
+        df['Adj Open'] = (df['Open']*df['Adj Close']/df['Close'])
+        df['Adj High'] = (df['High']*df['Adj Close']/df['Close'])
+        df['Adj Low'] = (df['Low']*df['Adj Close']/df['Close'])
 
 
 
