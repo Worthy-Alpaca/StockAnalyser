@@ -31,7 +31,7 @@ class Analyse:
             end = dt.datetime(endDate[0], endDate[1], endDate[2])
             return end
     
-    def durchschnitt(self, data, plot, plot2):
+    def durchschnitt(self, data, plot):
         df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
         style.use('ggplot')
 
@@ -45,12 +45,12 @@ class Analyse:
         plot.set_title(f"30 & 100 Tage gleitender Durchschnitt von {data.getStock1()}")
         plot.legend(( 'Adj Close', '100ma' ,'38ma'),loc='upper left')
 
-    def plainData(self, data, plot, plot2):
+    def plaindata(self, data, plot):
         df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))["Adj Close"]
         style.use('ggplot')
         plot.plot(df)
 
-    def candlestick(self, data, plot, plot2):
+    def candlestick(self, data, plot):
 
         style.use('ggplot')
         df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
@@ -63,7 +63,7 @@ class Analyse:
         plot.set_title(f"Candlesticks von {data.getStock1()}")
         candlestick_ohlc(plot, df_ohlc.values, width=4, colorup='g')
 
-    def volume(self, data, plot, plot2):
+    def volume(self, data, plot):
         style.use('ggplot')
         df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
         plot.bar(df.index, df['Volume'])
@@ -84,11 +84,13 @@ class Analyse:
         #Lower Band
         df['Lower Band'] = df['30 Day MA'] - (df['30 Day STD'] * 2)
         
-        plot.plot(df[['Adj Close', 'Upper Band', 'Lower Band']])
+        plot.plot(df[['Upper Band', 'Lower Band']])
+        plot2.plot(df[["Adj Close"]])
         plot.set_title(f"30 Tage Bollinger Band {data.getStock1()}")
-        plot.legend(( '30 Day STD','Upper Band', 'Lower Band'),loc='upper left')
+        plot.legend(('Upper Band', 'Lower Band'),loc='upper left')
+        plot2.legend(('30 Day STD'), loc='upper left')
 
-    def volatilität(self, data, plot, plot2):
+    def volatilität(self, data, plot):
 
         #https://medium.com/python-data/time-series-aggregation-techniques-with-python-a-look-at-major-cryptocurrencies-a9eb1dd49c1b
 
@@ -100,7 +102,7 @@ class Analyse:
         plot.plot(df[['Adj Close', '30_day_volatility']])
         plot.set_title(f"30 Tage Volatilität von {data.getStock1()}")
 
-    def dailyreturns(self, data, plot, plot2):
+    def dailyreturns(self, data, plot):
         style.use('ggplot')
 
         df = pd.DataFrame()
@@ -115,7 +117,7 @@ class Analyse:
         plot.plot(asset_returns_daily)
         plot.set_title(f"Daily returns von {data.getStock1()}")
 
-    def macd(self, data, plot, plot2):
+    def macd(self, data, plot):
 
         style.use('ggplot')
         df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
@@ -129,7 +131,7 @@ class Analyse:
         plot.legend(( 'Adj Close','MACD', 'Signal'),loc='upper left')
         #print("Hello")
 
-    def risk(self, data, plot, plot2):
+    def risk(self, data, plot):
         """ mit dailyreturns vergleichen da funktionen die gleichen sind """
         style.use('ggplot')
         #https://medium.com/python-data/assessing-the-riskiness-of-a-single-stock-in-python-12f2c5bb85b2
@@ -186,8 +188,9 @@ class Analyse:
 
         # Compare graphically
         plot.plot(RSI1)
-        plot.plot(RSI2)
-        plot.legend(['RSI via EWMA', 'RSI via SMA'])
+        plot2.plot(RSI2)
+        plot.legend(['RSI via EWMA'])
+        plot2.legend(['RSI via SMA'])
         plot.set_ylabel("Something something")
 
     def adx(self, data, plot, plot2):
