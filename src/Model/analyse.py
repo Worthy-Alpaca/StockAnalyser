@@ -202,6 +202,9 @@ class Analyse:
         df['Adj High'] = (df['High']*df['Adj Close']/df['Close'])
         df['Adj Low'] = (df['Low']*df['Adj Close']/df['Close'])
 
+        df['DX'] = (()/()).rolling(window=14).mean() #funktion noch nicht fertig
+        pass
+
 
 
 
@@ -210,7 +213,7 @@ class Analyse:
 
 
 if __name__ == "__main__":
-    sys.path.append("C:/Users/Yannic/OneDrive/Dokumente/Technische Hochschule Lübeck/Projekt Digitale Wirtschaft/diwi4/src/" + "basic_io")
+    #sys.path.append("C:/Users/Yannic/OneDrive/Dokumente/Technische Hochschule Lübeck/Projekt Digitale Wirtschaft/diwi4/src/" + "basic_io")
     #sys.path.append("C:/Users/Nils/Desktop/AllesMögliche/TH/5.Semester/DiWi/diwi4/src/" + "basic_io")
     #sys.path.append("C:/Users/Stephan/source/repos/diwi4/src/" + "basic_io")
     #sys.path.append("C:/Users/Yannic/OneDrive/Dokumente/Technische Hochschule Lübeck/Projekt Digitale Wirtschaft/diwi4/src/" + "basic_io")
@@ -230,5 +233,6 @@ if __name__ == "__main__":
     #test.volatilität(data, plot)
     #test.dailyreturns(data)
     #test.risk(data, plot) #muss noch optimiert werden
-    test.macd(data, plot)
+    #test.macd(data, plot)
+    #test.adx(data, plot) #noch nicht fertig
     plt.show()
