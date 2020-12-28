@@ -31,12 +31,12 @@ class Analyse:
             end = dt.datetime(endDate[0], endDate[1], endDate[2])
             return end
     
-    def durchschnitt(self, data, plot):
+    def durchschnitt(self, data, plot, plot2):
         df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
         style.use('ggplot')
 
         df['100ma'] = df['Adj Close'].rolling(window=100, min_periods=0).mean()        # 100 Average
-        df['38ma'] = df['Adj Close'].rolling(window=38, min_periods=0).mean()           # 38  Average
+        df['38ma'] = df['Adj Close'].rolling(window=38, min_periods=0).mean()
 
         plot.plot(df.index, df['Adj Close'])
         plot.plot(df.index, df['100ma'])
@@ -45,12 +45,12 @@ class Analyse:
         plot.set_title(f"30 & 100 Tage gleitender Durchschnitt von {data.getStock1()}")
         plot.legend(( 'Adj Close', '100ma' ,'38ma'),loc='upper left')
 
-    def plainData(self, data, plot):
+    def plainData(self, data, plot, plot2):
         df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))["Adj Close"]
         style.use('ggplot')
         plot.plot(df)
 
-    def candlestick(self, data, plot):
+    def candlestick(self, data, plot, plot2):
 
         style.use('ggplot')
         df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
@@ -63,12 +63,12 @@ class Analyse:
         plot.set_title(f"Candlesticks von {data.getStock1()}")
         candlestick_ohlc(plot, df_ohlc.values, width=4, colorup='g')
 
-    def volume(self, data, plot):
+    def volume(self, data, plot, plot2):
         style.use('ggplot')
         df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
         plot.bar(df.index, df['Volume'])
 
-    def bollinger(self, data, plot):
+    def bollinger(self, data, plot, plot2):
 
         #https://medium.com/python-data/setting-up-a-bollinger-band-with-python-28941e2fa300'
 
@@ -88,7 +88,7 @@ class Analyse:
         plot.set_title(f"30 Tage Bollinger Band {data.getStock1()}")
         plot.legend(( '30 Day STD','Upper Band', 'Lower Band'),loc='upper left')
 
-    def volatilität(self, data, plot):
+    def volatilität(self, data, plot, plot2):
 
         #https://medium.com/python-data/time-series-aggregation-techniques-with-python-a-look-at-major-cryptocurrencies-a9eb1dd49c1b
 
@@ -100,8 +100,7 @@ class Analyse:
         plot.plot(df[['Adj Close', '30_day_volatility']])
         plot.set_title(f"30 Tage Volatilität von {data.getStock1()}")
 
-
-    def dailyreturns(self, data, plot):
+    def dailyreturns(self, data, plot, plot2):
         style.use('ggplot')
 
         df = pd.DataFrame()
@@ -116,9 +115,8 @@ class Analyse:
         plot.plot(asset_returns_daily)
         plot.set_title(f"Daily returns von {data.getStock1()}")
 
-    
-    def macd(self,data, plot):
-        
+    def macd(self, data, plot, plot2):
+
         style.use('ggplot')
         df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
         df['ema12'] = df['Adj Close'].ewm(span=12).mean()
@@ -131,7 +129,7 @@ class Analyse:
         plot.legend(( 'Adj Close','MACD', 'Signal'),loc='upper left')
         #print("Hello")
 
-    def risk(self, data, plot):
+    def risk(self, data, plot, plot2):
         """ mit dailyreturns vergleichen da funktionen die gleichen sind """
         style.use('ggplot')
         #https://medium.com/python-data/assessing-the-riskiness-of-a-single-stock-in-python-12f2c5bb85b2
@@ -153,8 +151,7 @@ class Analyse:
         #plot(df())
         #plot.plot(df[['Adj Close', 'Upper Band', 'Lower Band']])
 
-    
-    def rsi(self, data, plot):
+    def rsi(self, data, plot, plot2):
 
         #https://stackoverflow.com/questions/20526414/relative-strength-index-in-python-pandas
 
@@ -193,7 +190,7 @@ class Analyse:
         plot.legend(['RSI via EWMA', 'RSI via SMA'])
         plot.set_ylabel("Something something")
 
-    def adx(self, data, plot):
+    def adx(self, data, plot, plot2):
         #gibt die Stärke eines Trendes an
         style.use('ggplot')
         df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
