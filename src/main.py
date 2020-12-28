@@ -23,7 +23,7 @@ from matplotlib.figure import Figure
 from matplotlib import pyplot as plt
 # import additional modules
 import json
-import inspect
+from inspect import signature
 class Mainframe:
     def __init__(self):
         self.mainframe = tk.Tk()
@@ -39,7 +39,7 @@ class Mainframe:
 
         self.createMenu()
         self.createButton(8, 0, "Plot", self.plotGraph)
-        self.createButton(8, 1, "Plain Data", self.plainData)
+        self.createButton(8, 1, "Plain Data", self.donothing)
         self.createForms()
         self.setFigure()
         
@@ -112,7 +112,11 @@ class Mainframe:
 
     """ @description: dummy function that does nothing """
     def donothing(self):
-        pass
+        chart = Analyse()
+        choice = self.variable.get().lower()
+        method = getattr(chart, choice)
+        sig = signature(method)
+        print(len(sig.parameters))
 
     def showCal1(self):
         self.top = tk.Toplevel(self.mainframe)
@@ -162,24 +166,28 @@ class Mainframe:
             return 
         chart = Analyse()
         choice = [self.variable.get().lower()]
-        twoplots = ["bollinger", "volume"]
         #choice = ["volatilität", "bollinger"]
-        # clearing the subplot
-        #self.plot.cla() 
-        #self.plot.set_ylabel("Price in USD")
+        # clearing the figure
         self.figure.clear()
+        for c in choice:
+            method = getattr(chart, c)
+            sig = signature(method)
+            self.numargs = len(sig.parameters)
+            
         # executing the function dynamically 
-        if "bollinger" or "durchschnitt" in choice:
+        if self.numargs == 3:
             self.plot = self.figure.add_subplot(211)
             self.plot2 = self.figure.add_subplot(212, sharex=self.plot)
             self.plot.set_ylabel("Price in USD")
+            self.plot2.set_ylabel("Price in USD")
+            self.args = (data, self.plot, self.plot2)
         else:
             self.plot = self.figure.add_subplot(111)
-            #self.plot.cla()
-            #self.plot.set_ylabel("Price in USD")
+            self.plot.set_ylabel("Price in USD")
+            self.args = (data, self.plot)        
 
         for c in choice:
-            getattr(chart, c)(data, self.plot, self.plot2)
+            getattr(chart, c)(*self.args)
         # refresh the canvas
         self.canvas.draw()
 
