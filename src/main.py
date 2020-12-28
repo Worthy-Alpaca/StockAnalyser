@@ -15,7 +15,7 @@ import config
 """ Importing packages """
 # import tkinter
 import tkinter as tk
-from tkinter import filedialog, ttk
+from tkinter import Label, filedialog, ttk
 from tkcalendar import Calendar
 # import matplotlib
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
@@ -32,6 +32,8 @@ class Mainframe:
 
         self.calDate1 = None
         self.calDate2 = None
+        self.plot = None
+        self.plot2 = None
         self.dateLabel1 = tk.Label(self.mainframe).grid(row=1, column=3)
         self.dateLabel2 = tk.Label(self.mainframe).grid(row=1, column=5)
 
@@ -143,6 +145,8 @@ class Mainframe:
 
     """ @description: read all inputs and return as object """
     def parseInput(self):
+        if self.stock1.get() == "" or self.stock2.get() == "" or self.calDate1 == None or self.calDate2 == None:
+            return None
         data = Input()
         data.setFirstStock(str(self.stock1.get()))
         data.setSecondStock(str(self.stock2.get()))
@@ -153,18 +157,36 @@ class Mainframe:
     """ @description: function that initiates the calculations """
     def plotGraph(self):
         data = self.parseInput()
+        if data == None:
+            self.errorHandling("Not enough input")
+            return 
         chart = Analyse()
         choice = [self.variable.get().lower()]
+        twoplots = ["bollinger", "volume"]
         #choice = ["volatilität", "bollinger"]
         # clearing the subplot
-        self.plot.cla() 
-        self.plot.set_ylabel("Price in USD")
-        # executing the function dynamically       
+        #self.plot.cla() 
+        #self.plot.set_ylabel("Price in USD")
+        self.figure.clear()
+        # executing the function dynamically 
+        if "bollinger" or "durchschnitt" in choice:
+            self.plot = self.figure.add_subplot(211)
+            self.plot2 = self.figure.add_subplot(212, sharex=self.plot)
+            self.plot.set_ylabel("Price in USD")
+        else:
+            self.plot = self.figure.add_subplot(111)
+            #self.plot.cla()
+            #self.plot.set_ylabel("Price in USD")
+
         for c in choice:
-            getattr(chart, c)(data, self.plot)
-        
+            getattr(chart, c)(data, self.plot, self.plot2)
         # refresh the canvas
         self.canvas.draw()
+
+    def errorHandling(self, error):
+        self.error = tk.Toplevel(self.mainframe, background="RED")
+        tk.Label(self.error, text=error).pack()
+        ttk.Button(self.error, text="ok", command=self.error.withdraw).pack()
 
     def plainData(self):
         data = self.parseInput()
@@ -183,12 +205,13 @@ class Mainframe:
         self.canvas = FigureCanvasTkAgg(self.figure, master=self.mainframe)
         self.canvas.draw()
         self.canvas.get_tk_widget().grid(
-            row=2, column=0, columnspan=10, rowspan=10, padx=(20, 20))
+            row=3, column=0, columnspan=10, rowspan=10, padx=(20, 20))
         self.toolbar = NavigationToolbar2Tk(self.canvas, self.mainframe, pack_toolbar=False)
         self.toolbar.update()
         self.toolbar.grid(
             row=13, column=0, columnspan=10, rowspan=10, padx=(20, 20))
-        self.plot = self.figure.add_subplot(111)
+        #self.plot = self.figure.add_subplot(211)
+        #self.plot2 = self.figure.add_subplot(212, sharex=self.plot)
         
     """ @description: function to clear all inputs """
     def new(self):
