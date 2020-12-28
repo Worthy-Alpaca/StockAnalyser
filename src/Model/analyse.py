@@ -115,7 +115,8 @@ class Analyse:
         #asset_volatility_daily = asset_returns_daily.std()
         
         plot.plot(asset_returns_daily)
-        plot.set_title(f"Daily returns von {data.getStock1()}")
+        plot.set_title(f"Daily returns von {data.getStock1()} und {data.getStock2()}")
+        plot.legend((data.getStock1(), data.getStock2()), loc='upper left')
 
     def macd(self, data, plot):
 
