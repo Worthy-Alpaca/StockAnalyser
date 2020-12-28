@@ -117,17 +117,19 @@ class Analyse:
         plot.set_title(f"Daily returns von {data.getStock1()}")
 
     
-    def macd(self,data):
-        startDate = data.getStartDate()
-        endDate = data.getEndDate()
-
-        start = dt.datetime(startDate[0], startDate[1], startDate[2])
-        end = dt.datetime(endDate[0], endDate[1], endDate[2])
-
+    def macd(self,data, plot):
+        
         style.use('ggplot')
-        df = web.DataReader(data.getStock1(), 'yahoo', start, end)
+        df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
+        df['ema12'] = df['Adj Close'].ewm(span=12).mean()
+        df['ema26'] = df['Adj Close'].ewm(span=26).mean()
+        df['MACD'] = (df['ema12']-df['ema26'])
 
-        #print(df)
+        df['Signal'] = df['MACD'].ewm(span=9).mean()
+        plot.plot(df[['Adj Close', 'MACD', 'Signal']])
+        plot.set_title(f"Adj Close MACD und Signallinie von {data.getStock1()}")
+        plot.legend(( 'Adj Close','MACD', 'Signal'),loc='upper left')
+        #print("Hello")
 
     def risk(self, data, plot):
         """ mit dailyreturns vergleichen da funktionen die gleichen sind """
@@ -203,7 +205,7 @@ class Analyse:
 
 
 if __name__ == "__main__":
-    #sys.path.append("C:/Users/Yannic/OneDrive/Dokumente/Technische Hochschule Lübeck/Projekt Digitale Wirtschaft/diwi4/src/" + "basic_io")
+    sys.path.append("C:/Users/Yannic/OneDrive/Dokumente/Technische Hochschule Lübeck/Projekt Digitale Wirtschaft/diwi4/src/" + "basic_io")
     #sys.path.append("C:/Users/Nils/Desktop/AllesMögliche/TH/5.Semester/DiWi/diwi4/src/" + "basic_io")
     #sys.path.append("C:/Users/Stephan/source/repos/diwi4/src/" + "basic_io")
     #sys.path.append("C:/Users/Yannic/OneDrive/Dokumente/Technische Hochschule Lübeck/Projekt Digitale Wirtschaft/diwi4/src/" + "basic_io")
@@ -223,4 +225,5 @@ if __name__ == "__main__":
     #test.volatilität(data, plot)
     #test.dailyreturns(data)
     #test.risk(data, plot) #muss noch optimiert werden
+    test.macd(data, plot)
     plt.show()
