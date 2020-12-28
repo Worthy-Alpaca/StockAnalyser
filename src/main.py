@@ -166,14 +166,13 @@ class Mainframe:
             return 
         chart = Analyse()
         choice = [self.variable.get().lower()]
-        #choice = ["volatilität", "bollinger"]
         # clearing the figure
         self.figure.clear()
         for c in choice:
             method = getattr(chart, c)
             sig = signature(method)
             self.numargs = len(sig.parameters)
-            
+
         # executing the function dynamically 
         if self.numargs == 3:
             self.plot = self.figure.add_subplot(211)
@@ -218,8 +217,6 @@ class Mainframe:
         self.toolbar.update()
         self.toolbar.grid(
             row=13, column=0, columnspan=10, rowspan=10, padx=(20, 20))
-        #self.plot = self.figure.add_subplot(211)
-        #self.plot2 = self.figure.add_subplot(212, sharex=self.plot)
         
     """ @description: function to clear all inputs """
     def new(self):
