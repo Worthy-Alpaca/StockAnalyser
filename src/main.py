@@ -32,14 +32,14 @@ class Mainframe:
         self.mainframe.geometry("1200x750")
         self.photo = PhotoImage(file = config._path + "src/assets/giphy.gif")
         self.mainframe.iconphoto(True, self.photo)
-
+        """ Declaring things for later use """
         self.calDate1 = None
         self.calDate2 = None
         self.plot = None
         self.plot2 = None
         self.dateLabel1 = tk.Label(self.mainframe).grid(row=1, column=3)
         self.dateLabel2 = tk.Label(self.mainframe).grid(row=1, column=5)
-
+        """ Create UI elements """
         self.createMenu()
         self.createButton(8, 0, "Plot", self.plotGraph)
         self.createButton(8, 1, "Plain Data", self.donothing)
