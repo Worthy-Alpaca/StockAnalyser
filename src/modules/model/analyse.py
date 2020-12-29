@@ -226,19 +226,6 @@ class Analyse:
 
 
 if __name__ == "__main__":
-    #sys.path.append("C:/Users/Yannic/OneDrive/Dokumente/Technische Hochschule Lübeck/Projekt Digitale Wirtschaft/diwi4/src/")
-    #sys.path.append("C:/Users/Nils/Desktop/AllesMögliche/TH/5.Semester/DiWi/diwi4/src/")
-    #sys.path.append("C:/Users/Stephan/source/repos/diwi4/src/")
-    #sys.path.append("C:/Users/Yannic/OneDrive/Dokumente/Technische Hochschule Lübeck/Projekt Digitale Wirtschaft/diwi4/src/")
-    #sys.path.append("C:/Users/Nils/Desktop/AllesMögliche/TH/5.Semester/DiWi/diwi4/src/")
-    #from modules.basic_io.input import Input
-    """ This dynamically reads the current directory 
-    import os
-    PACKAGE_PARENT = '../..' # change according to needed parent 
-    SCRIPT_DIR = os.path.dirname(os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__))))
-    sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
-    -------------------------------------------- """
-    #from modules import Input
     data = Input()
     data.setFirstStock("AAPL")
     data.setSecondStock("GOOGL")
