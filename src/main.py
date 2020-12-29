@@ -6,9 +6,8 @@ Interface
 """
 
 """ Importing classes """
-from basic_io.basic_io import Input
-from Model.analyse import Analyse
-
+from modules import Input
+from modules import Analyse
 """ import config """
 import config
 
