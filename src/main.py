@@ -16,7 +16,7 @@ import config
 import tkinter as tk
 
 """ Importing packages """
-from tkinter import filedialog, ttk
+from tkinter import filedialog, PhotoImage, ttk
 from tkcalendar import Calendar
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
@@ -30,6 +30,8 @@ class Mainframe:
         self.mainframe = tk.Tk()
         self.mainframe.title("STONKS analysis")
         self.mainframe.geometry("1200x750")
+        self.photo = PhotoImage(file = config._path + "src/assets/giphy.gif")
+        self.mainframe.iconphoto(True, self.photo)
 
         self.calDate1 = None
         self.calDate2 = None
