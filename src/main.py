@@ -12,14 +12,12 @@ from modules import Analyse
 import config
 
 """ Importing packages """
-# import tkinter
 import tkinter as tk
-from tkinter import Label, filedialog, ttk
+from tkinter import filedialog, ttk
 from tkcalendar import Calendar
 # import matplotlib
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
-from matplotlib import pyplot as plt
 # import additional modules
 import json
 from inspect import signature
