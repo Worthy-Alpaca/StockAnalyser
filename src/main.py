@@ -8,19 +8,23 @@ Interface
 """ Importing classes """
 from modules import Input
 from modules import Analyse
-""" import config """
+
+""" Importing config """
 import config
 
-""" Importing packages """
+""" Importing Modules """
 import tkinter as tk
+
+""" Importing packages """
 from tkinter import filedialog, ttk
 from tkcalendar import Calendar
-# import matplotlib
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
-# import additional modules
+
+""" Importing additional modules """
 import json
 from inspect import signature
+
 class Mainframe:
     def __init__(self):
         self.mainframe = tk.Tk()

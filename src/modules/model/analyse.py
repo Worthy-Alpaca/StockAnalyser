@@ -6,17 +6,28 @@ Created on 23.12.2020
 Analyse 
 """
 
+""" Importing Modules """
+import pandas as pd
 import datetime as dt
 import matplotlib.pyplot as plt
+
+""" Importing Packages """
 from matplotlib import style
-import pandas as pd
 import pandas_datareader.data as web
+import matplotlib.dates as mdates
+from mplfinance.original_flavor import candlestick_ohlc
+
+""" Import additional modules """
+import os
 import sys
 
-#Import Candlestick
-import mplfinance
-import matplotlib.dates as mdates
-from mplfinance.original_flavor import candlestick_ohlc 
+""" Adding current directory to path """
+PACKAGE_PARENT = '../..'
+SCRIPT_DIR = os.path.dirname(os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__))))
+sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
+
+""" Importing classes """
+from modules import Input 
 
 class Analyse:
     def __init__(self):
@@ -221,13 +232,13 @@ if __name__ == "__main__":
     #sys.path.append("C:/Users/Yannic/OneDrive/Dokumente/Technische Hochschule Lübeck/Projekt Digitale Wirtschaft/diwi4/src/")
     #sys.path.append("C:/Users/Nils/Desktop/AllesMögliche/TH/5.Semester/DiWi/diwi4/src/")
     #from modules.basic_io.input import Input
-    """ This dynamically reads the current directory """
+    """ This dynamically reads the current directory 
     import os
-    PACKAGE_PARENT = '../..' """ change according to needed parent """
+    PACKAGE_PARENT = '../..' # change according to needed parent 
     SCRIPT_DIR = os.path.dirname(os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__))))
     sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
-    """ -------------------------------------------- """
-    from modules import Input
+    -------------------------------------------- """
+    #from modules import Input
     data = Input()
     data.setFirstStock("AAPL")
     data.setSecondStock("GOOGL")
