@@ -20,6 +20,7 @@ from tkinter import filedialog, PhotoImage, ttk
 from tkcalendar import Calendar
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
+from matplotlib import style
 
 """ Importing additional modules """
 import json
@@ -205,8 +206,9 @@ class Mainframe:
         ttk.Button(self.error, text="ok", command=self.error.withdraw).pack() """
     def errorHandling(self, error):
         self.errorPlot = self.figure.add_subplot(312)
+        style.use('ggplot')
         self.errorPlot.axis('off')
-        self.errorPlot.set_title(error, color='C3')
+        self.errorPlot.set_title(error, color='C7')
         self.canvas.draw()
 
     def plainData(self):
