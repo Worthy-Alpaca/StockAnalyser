@@ -43,7 +43,7 @@ class Mainframe:
         """ Create UI elements """
         self.createMenu()
         self.createButton(8, 0, "Plot", self.plotGraph)
-        self.createButton(8, 1, "Plain Data", self.donothing)
+        self.createButton(8, 1, "Plain Data", self.plainData)
         self.createForms()
         self.setFigure()
         
@@ -204,6 +204,7 @@ class Mainframe:
         self.error.geometry("+%d+%d" % (self.mainframe.winfo_x() + 560, self.mainframe.winfo_y() + 200))
         tk.Label(self.error, text=error).pack()
         ttk.Button(self.error, text="ok", command=self.error.withdraw).pack() """
+    """ @description: run when an error is encountered """
     def errorHandling(self, error):
         self.errorPlot = self.figure.add_subplot(312)
         style.use('ggplot')
@@ -211,14 +212,17 @@ class Mainframe:
         self.errorPlot.set_title(error, color='C7')
         self.canvas.draw()
 
+    """ @description: displays just plain data, no calculations """
     def plainData(self):
         data = self.parseInput()
         chart = Analyse()
-        # clearing the subplot
-        self.plot.cla()
+        # clearing the figure
+        self.figure.clear()
+        # creating new subplot
+        self.plot = self.figure.add_subplot(111)
         self.plot.set_ylabel("Price in USD")
         # executing the function dynamically
-        chart.plainData(data, self.plot)
+        chart.plaindata(data, self.plot)
         # refresh the canvas
         self.canvas.draw()
        
