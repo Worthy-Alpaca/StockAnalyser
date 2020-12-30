@@ -50,9 +50,8 @@ class Input():
         test = json.loads(data)
         if test != []:
             return test[0]["symbol"]
-            #print(test)
         else:
-            return #entry.config(highlightbackground="red")
+            return False
         
 
     def getStock1(self):

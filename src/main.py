@@ -188,15 +188,26 @@ class Mainframe:
             self.plot.set_ylabel("Price in USD")
             self.args = (data, self.plot)        
 
-        for c in choice:
-            getattr(chart, c)(*self.args)
+        try:
+            for c in choice:
+                getattr(chart, c)(*self.args)
+        except:
+            self.figure.clear()
+            return self.errorHandling("There was an error. Please check if all inputs are correct!")
+            
         # refresh the canvas
         self.canvas.draw()
 
-    def errorHandling(self, error):
+    """ def errorHandling(self, error):
         self.error = tk.Toplevel(self.mainframe, background="RED")
+        self.error.geometry("+%d+%d" % (self.mainframe.winfo_x() + 560, self.mainframe.winfo_y() + 200))
         tk.Label(self.error, text=error).pack()
-        ttk.Button(self.error, text="ok", command=self.error.withdraw).pack()
+        ttk.Button(self.error, text="ok", command=self.error.withdraw).pack() """
+    def errorHandling(self, error):
+        self.errorPlot = self.figure.add_subplot(312)
+        self.errorPlot.axis('off')
+        self.errorPlot.set_title(error, color='C3')
+        self.canvas.draw()
 
     def plainData(self):
         data = self.parseInput()
