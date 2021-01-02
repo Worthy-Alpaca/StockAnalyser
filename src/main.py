@@ -24,6 +24,9 @@ from matplotlib import style
 
 """ Importing additional modules """
 import json
+import sys
+import random
+import string
 from inspect import signature
 
 class Mainframe:
@@ -164,14 +167,17 @@ class Mainframe:
 
     """ @description: function that initiates the calculations """
     def plotGraph(self):
-        data = self.parseInput()
+        self.figure.clear()
+        try:
+            data = self.parseInput()
+        except Exception as e:
+            self.figure.clear()
+            return self.errorHandling(e)
         if data == None:
             self.errorHandling("Not enough input")
             return 
         chart = Analyse()
-        choice = [self.variable.get().lower()]
-        # clearing the figure
-        self.figure.clear()
+        choice = [self.variable.get()]
         for c in choice:
             method = getattr(chart, c)
             sig = signature(method)
@@ -192,25 +198,35 @@ class Mainframe:
         try:
             for c in choice:
                 getattr(chart, c)(*self.args)
-        except:
+        except Exception as e:
             self.figure.clear()
-            return self.errorHandling("There was an error. Please check if all inputs are correct!")
+            return self.errorHandling(e)
             
         # refresh the canvas
         self.canvas.draw()
 
-    """ def errorHandling(self, error):
-        self.error = tk.Toplevel(self.mainframe, background="RED")
-        self.error.geometry("+%d+%d" % (self.mainframe.winfo_x() + 560, self.mainframe.winfo_y() + 200))
-        tk.Label(self.error, text=error).pack()
-        ttk.Button(self.error, text="ok", command=self.error.withdraw).pack() """
-    """ @description: run when an error is encountered """
+    """ @description: handling errors """
     def errorHandling(self, error):
         self.errorPlot = self.figure.add_subplot(312)
         style.use('ggplot')
         self.errorPlot.axis('off')
-        self.errorPlot.set_title(error, color='C7')
+        if error == "Not enough input":
+            self.errorPlot.set_title(f"Error: {error}", color='C7')
+        elif str(error) == "No data fetched for symbol False using YahooDailyReader":
+            self.errorPlot.set_title(f"Error: Entered stock could not be found!", color='C7')
+        else:
+            errorcode = self.errorCode(8)
+            with open(config._path + "data/errors.txt", "a") as f:
+                f.write(f"{error} : {errorcode}\n")
+                f.close()
+            self.errorPlot.set_title(f"An error occured. Please report to an application administrator. Errorcode: {errorcode}", color='C7')
         self.canvas.draw()
+
+    """ @description: create an error code """
+    def errorCode(self, length):
+        letters = string.ascii_lowercase
+        result_str = ''.join(random.choice(letters) for i in range(length))
+        return result_str
 
     """ @description: displays just plain data, no calculations """
     def plainData(self):
