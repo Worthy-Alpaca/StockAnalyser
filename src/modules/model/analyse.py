@@ -139,7 +139,10 @@ class Analyse:
         style.use('ggplot')
 
         df = pd.DataFrame()
-        assets = [data.getStock1(), data.getStock2()]
+        assets = [data.getStock1()]
+
+        if data.getStock2() != False:
+            assets.append(data.getStock2())
 
         for stock in assets:
             df[stock] = web.DataReader(stock, 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))['Adj Close']
