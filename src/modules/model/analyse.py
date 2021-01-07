@@ -60,9 +60,12 @@ class Analyse:
         plot.legend(( 'Adj Close', '100ma' ,'38ma'),loc='upper left')
 
     def plaindata(self, data, plot):
-        df = web.DataReader([data.getStock1(), data.getStock2()], 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))["Adj Close"]
+        df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))["Adj Close"]
         style.use('ggplot')
         plot.plot(df)
+        if data.getStock2() != False:
+            df2 = web.DataReader(data.getStock2(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))["Adj Close"]
+            plot.plot(df2)
 
     def candlestick(self, data, plot):
 
@@ -87,33 +90,32 @@ class Analyse:
         plot.legend((data.getStock1(), data.getStock2()), loc='upper left')
 
     def bollinger(self, data, plot, plot2):
-
+        
         #https://medium.com/python-data/setting-up-a-bollinger-band-with-python-28941e2fa300'
 
         style.use('ggplot')
         df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
-        df2 = web.DataReader(data.getStock2(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
 
         df['30 Day MA'] = df['Adj Close'].rolling(window=20).mean()
         df['30 Day STD'] = df['Adj Close'].rolling(window=20).std()
-
-        df2['30 Day MA'] = df2['Adj Close'].rolling(window=20).mean()
-        df2['30 Day STD'] = df2['Adj Close'].rolling(window=20).std()
-
         #Upper Band
         df['Upper Band'] = df['30 Day MA'] + (df['30 Day STD'] * 2)
-        df2['Upper Band'] = df2['30 Day MA'] + (df2['30 Day STD'] * 2)
-        
         #Lower Band
         df['Lower Band'] = df['30 Day MA'] - (df['30 Day STD'] * 2)
-        df2['Lower Band'] = df2['30 Day MA'] - (df2['30 Day STD'] * 2)
         
         plot.plot(df[['Upper Band', 'Lower Band', "Adj Close"]])
-        plot2.plot(df2[['Upper Band', 'Lower Band', "Adj Close"]])
         plot.set_title(f"30 Tage Bollinger Band {data.getStock1()}")
-        plot2.set_title(f"30 Tage Bollinger Band {data.getStock2()}")
         plot.legend(('Upper Band', 'Lower Band', '30 Day STD'), loc='upper left')
-        plot2.legend(('Upper Band', 'Lower Band', '30 Day STD'), loc='upper left')
+        
+        if data.getStock2() != False:
+            df2 = web.DataReader(data.getStock2(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
+            df2['30 Day MA'] = df2['Adj Close'].rolling(window=20).mean()
+            df2['30 Day STD'] = df2['Adj Close'].rolling(window=20).std()
+            df2['Upper Band'] = df2['30 Day MA'] + (df2['30 Day STD'] * 2)
+            df2['Lower Band'] = df2['30 Day MA'] - (df2['30 Day STD'] * 2)
+            plot2.plot(df2[['Upper Band', 'Lower Band', "Adj Close"]])
+            plot2.set_title(f"30 Tage Bollinger Band {data.getStock2()}")
+            plot2.legend(('Upper Band', 'Lower Band', '30 Day STD'), loc='upper left')
 
     def volatilität(self, data, plot, plot2):
 
@@ -144,7 +146,7 @@ class Analyse:
 
         asset_returns_daily = df.pct_change()
         #asset_volatility_daily = asset_returns_daily.std()
-        
+        asset_returns_daily.plot.hist(bins=50, figsize=(10, 6))
         plot.plot(asset_returns_daily)
         plot.set_title(f"Daily returns von {data.getStock1()} und {data.getStock2()}")
         plot.legend((data.getStock1(), data.getStock2()), loc='upper left')
@@ -169,7 +171,8 @@ class Analyse:
         #https://medium.com/python-data/assessing-the-riskiness-of-a-single-stock-in-python-12f2c5bb85b2
 
         
-        assets = [data.getStock1(), data.getStock2()]
+        #assets = [data.getStock1(), data.getStock2()]
+        assets = ['AAPL', 'FB', 'TSLA']
         df = pd.DataFrame()
         
         for stock in assets:
@@ -178,7 +181,7 @@ class Analyse:
         asset_returns_daily = df.pct_change()
         asset_volatility_daily = asset_returns_daily.std()
 
-        asset_volatility_daily.plot.hist(bins=50, figsize=(10,6));
+        asset_returns_daily.plot.hist(bins=50, figsize=(10, 6))
         plot.set_xlabel('Risiko')
         plot.set_title(f"Risiko von {data.getStock1()} und {data.getStock2()}")
         #print("Hello")
@@ -251,14 +254,14 @@ if __name__ == "__main__":
     data.setStartDate("2010-12-12")
     data.setEndDate("2020-12-12")
     plot = plt.subplot2grid((6, 1), (0, 0), rowspan=5, colspan=1)
-    plot2 = plt.subplot2grid((6, 1), (5, 0), rowspan=5, colspan=1)
+    #plot2 = plt.subplot2grid((6, 1), (5, 0), rowspan=5, colspan=1)
     test = Analyse()
     #test.durchschnitt(data, plot)
     #test.candlestick(data, plot)
     #test.bollinger(data, plot, plot2)
     #test.volume(data, plot)
-    test.volatilität(data, plot, plot2)
-    #test.dailyreturns(data)
+    #test.volatilität(data, plot, plot2)
+    test.dailyreturns(data, plot)
     #test.risk(data, plot) #muss noch optimiert werden
     #test.macd(data, plot)
     #test.adx(data, plot) #noch nicht fertig

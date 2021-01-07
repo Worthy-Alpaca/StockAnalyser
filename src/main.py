@@ -88,9 +88,9 @@ class Mainframe:
     """ @description: method that creates the inputs """
     def createForms(self):
         self.label1 = tk.Label(
-           self.mainframe, text="1. Stock name:").grid(row=0, column=0)
+           self.mainframe, text="Stock name:").grid(row=0, column=0)
         self.label5 = tk.Label(
-            self.mainframe, text="2. Stock name:").grid(row=1, column=0)
+            self.mainframe, text="Stock name (optional):").grid(row=1, column=0)
         self.label2 = tk.Label(
            self.mainframe, text="Start date:").grid(row=0, column=2)
         self.label3 = tk.Label(
@@ -156,7 +156,7 @@ class Mainframe:
 
     """ @description: read all inputs and return as object """
     def parseInput(self):
-        if self.stock1.get() == "" or self.stock2.get() == "" or self.calDate1 == None or self.calDate2 == None:
+        if self.stock1.get() == "" or self.calDate1 == None or self.calDate2 == None:
             return None
         data = Input()
         data.setFirstStock(str(self.stock1.get()))
@@ -184,7 +184,12 @@ class Mainframe:
             self.numargs = len(sig.parameters)
 
         # executing the function dynamically 
-        if self.numargs == 3:
+        if self.numargs == 3 and data.getStock2() == False:
+            self.plot = self.figure.add_subplot(111)
+            self.plot2 = None
+            self.plot.set_ylabel("Price in USD")
+            self.args = (data, self.plot, self.plot2)
+        elif self.numargs == 3:
             self.plot = self.figure.add_subplot(211)
             self.plot2 = self.figure.add_subplot(212, sharex=self.plot)
             self.plot.set_ylabel("Price in USD")

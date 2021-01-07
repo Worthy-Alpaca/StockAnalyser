@@ -44,6 +44,9 @@ class Input():
         if (stock.lower() == "google"):
             stock = "alphabet"
 
+        if stock == "":
+            return False
+
         url = (f"https://financialmodelingprep.com/api/v3/search?query={stock.lower()}&limit=10&exchange=NASDAQ&apikey=demo")
         response = urlopen(url)
         data = response.read().decode("utf-8")
