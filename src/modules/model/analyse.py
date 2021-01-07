@@ -168,8 +168,7 @@ class Analyse:
         plot.legend(( 'Adj Close','MACD', 'Signal'),loc='upper left')
         #print("Hello")
 
-    def risk(self, data, plot):
-        """ mit dailyreturns vergleichen da funktionen die gleichen sind """
+    """ def risk(self, data, plot):
         style.use('ggplot')
         #https://medium.com/python-data/assessing-the-riskiness-of-a-single-stock-in-python-12f2c5bb85b2
 
@@ -189,7 +188,7 @@ class Analyse:
         plot.set_title(f"Risiko von {data.getStock1()} und {data.getStock2()}")
         #print("Hello")
         #plot(df())
-        #plot.plot(df[['Adj Close', 'Upper Band', 'Lower Band']])
+        #plot.plot(df[['Adj Close', 'Upper Band', 'Lower Band']]) """
 
     def rsi(self, data, plot, plot2):
 
@@ -230,21 +229,6 @@ class Analyse:
         plot.legend(['RSI via EWMA'])
         plot2.legend(['RSI via SMA'])
         plot.set_ylabel("Something something")
-
-    def adx(self, data, plot, plot2):
-        #gibt die Stärke eines Trendes an
-        style.use('ggplot')
-        df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
-
-        df['Adj Open'] = (df['Open']*df['Adj Close']/df['Close'])
-        df['Adj High'] = (df['High']*df['Adj Close']/df['Close'])
-        df['Adj Low'] = (df['Low']*df['Adj Close']/df['Close'])
-
-        df['DX'] = (()/()).rolling(window=14).mean() #funktion noch nicht fertig
-        pass
-
-
-
 
 
 
