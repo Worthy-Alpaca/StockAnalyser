@@ -120,13 +120,18 @@ class Analyse:
         #https://medium.com/python-data/time-series-aggregation-techniques-with-python-a-look-at-major-cryptocurrencies-a9eb1dd49c1b
 
         style.use('ggplot')
-        df = web.DataReader([data.getStock1(), data.getStock2()], self.parseDate(data, "start"), self.parseDate(data, "end"))
-        print(df["Close"])
+        df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
+        df2 = web.DataReader(data.getStock2(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
         df['30_day_volatility'] = df['Close'].rolling(window=20).std()
-        print(df)
+        df2['30_day_volatility'] = df2['Close'].rolling(window=20).std()
+
         plot.plot(df[['Adj Close']])
+        plot.plot(df2[['Adj Close']])
         plot2.plot(df[['30_day_volatility']])
-        plot.set_title(f"30 Tage Volatilität von {data.getStock1()}")
+        plot2.plot(df2[['30_day_volatility']])
+        plot.legend((data.getStock1(), data.getStock2()), loc='upper left')
+        plot.set_title(f"Kursverlauf von {data.getStock1()} und {data.getStock2()}")
+        plot2.set_title(f"30 Tage Volatilität von {data.getStock1()} und {data.getStock2()}")
 
     def dailyreturns(self, data, plot):
         style.use('ggplot')
