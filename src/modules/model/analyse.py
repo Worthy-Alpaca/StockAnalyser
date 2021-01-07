@@ -82,7 +82,9 @@ class Analyse:
         df = web.DataReader([data.getStock1(), data.getStock2()], 'yahoo', self.parseDate(
             data, "start"), self.parseDate(data, "end"))
         print(df)
+        plot.set_title(f"Volumen von {data.getStock1()} und {data.getStock2()}")
         plot.plot(df.index, df['Volume'])
+        plot.legend((data.getStock1(), data.getStock2()), loc='upper left')
 
     def bollinger(self, data, plot, plot2):
 
