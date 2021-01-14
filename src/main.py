@@ -6,6 +6,7 @@ Interface
 """
 
 """ Importing classes """
+from matplotlib.pyplot import text
 from modules import Input
 from modules import Analyse
 
@@ -45,8 +46,9 @@ class Mainframe:
         self.dateLabel2 = tk.Label(self.mainframe).grid(row=1, column=5)
         """ Create UI elements """
         self.createMenu()
-        self.createButton(8, 0, "Plot", self.plotGraph)
-        self.createButton(8, 1, "Plain Data", self.plainData)
+        self.createButton(9, 0, "Plot", self.plotGraph)
+        self.createButton(9, 1, "Plain Data", self.plainData)
+        self.createButton(8, 0, "?", self.showToolTip, margin=0)
         self.createForms()
         self.setFigure()
         
@@ -67,10 +69,12 @@ class Mainframe:
        self.mainframe.config(menu=menubar)
 
     """ @description: method that creates a button """
-    def createButton(self, posX, posY, name, function):
-       self.button = tk.Button(
-           master=self.mainframe, height=1, width=10, text=name, command=function)
-       self.button.grid(row=posY, column=posX, padx=(30, 0))
+    def createButton(self, posX, posY, name, function, margin=None):
+        if margin == None:
+            margin = 30
+        self.button = tk.Button(
+            master=self.mainframe, height=1, width=10, text=name, command=function)
+        self.button.grid(row=posY, column=posX, padx=(margin, 0))
 
     """ @description: returns all function names of a given class """
     def method_finder(self, classname):
@@ -116,7 +120,22 @@ class Mainframe:
             master=self.mainframe, height=1, width=10, text="Select", command=lambda: self.showCal2())
         self.date2.grid(row=0, column=5)
         self.option = tk.OptionMenu(self.mainframe, self.variable, *OptionList)
-        self.option.grid(row=0, column=7)
+        self.option.grid(row=0, column=7, padx=(0, 0))
+
+    def showToolTip(self):
+        choice = self.variable.get().lower()
+        with open(config._path + "src/assets/tooltips.json") as file:
+            data = json.load(file)
+        try:
+            description = data["tooltips"][choice]
+            self.tooltip = tk.Toplevel(self.mainframe)
+            self.tooltip.geometry("300x150")
+            tk.Label(self.tooltip, text=choice).pack()
+            tk.Label(self.tooltip, text=description).pack()
+            ttk.Button(self.tooltip, text="ok", command=self.tooltip.withdraw).pack()
+        except Exception as e:
+            self.figure.clear()
+            return self.errorHandling(e)
 
     """ @description: dummy function that does nothing """
     def donothing(self):
