@@ -72,6 +72,7 @@ class Mainframe:
            master=self.mainframe, height=1, width=10, text=name, command=function)
        self.button.grid(row=posY, column=posX, padx=(30, 0))
 
+    """ @description: returns all function names of a given class """
     def method_finder(self, classname):
         methods = []
         class_methods = dir(classname)
@@ -125,6 +126,7 @@ class Mainframe:
         sig = signature(method)
         print(len(sig.parameters))
 
+    """ @description: display the first calendar """
     def showCal1(self):
         self.top = tk.Toplevel(self.mainframe)
         def getDate():
@@ -139,6 +141,7 @@ class Mainframe:
         self.cal.pack(fill="both", expand=True)
         ttk.Button(self.top, text="ok", command=getDate).pack()
 
+    """ @description: display the second calendar """
     def showCal2(self):
         self.top = tk.Toplevel(self.mainframe)
 
