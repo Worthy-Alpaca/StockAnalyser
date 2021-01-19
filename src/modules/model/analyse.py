@@ -22,6 +22,11 @@ from mplfinance.original_flavor import candlestick_ohlc
 import os
 import sys
 
+""" Import Arima Modell """
+from statsmodels.tsa.arima_model import ARIMA
+from statsmodels.tsa.stattools import adfuller
+import statsmodels.api as sm
+
 """ Adding current directory to path """
 PACKAGE_PARENT = '../..'
 SCRIPT_DIR = os.path.dirname(os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__))))
@@ -230,8 +235,35 @@ class Analyse:
         plot2.legend(['RSI via SMA'])
         plot.set_ylabel("Something something")
 
+#geht noch nicht
+    def adfuller_test(self, data, plot):
+        df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
 
+        result = adfuller(df)
+        labels = ['ADF Test Statistic', 'p-value', '#Lags Used', 'Number of Observations']
+        for value, label in zip(result, labels):
+            print (label+' : '+str(value))
 
+        if result[1] <= 0.05
+            print( "strong evidence against the null hypothesis(Ho), reject the null hyp")
+        else: 
+            print("weak evidence against null hypothesis, indicating it is non-stationary")
+
+        adfuller_test(df['Open'])
+        fig = plt.figure(figsize=(12,8))
+        ax1 = fig.add_subplot(211)
+        fig = sm.graphics.tsa.plot_acf(df['Open'].dropna(),lags=40,ax=ax1)
+        ax2 = fig.add_subplot(212)
+        fig = sm.graphics.tsa.plot_pacf(df['Open'].dropna(),lags=40,ax=ax2)
+
+#geht noch nicht
+    def arima(self, data, plot):
+        df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
+        df = yf.download("data.getStock1()", self.parseDate(data, "start"),self.parseDate(data, "end"))
+        df.index = pd.DatetimeIndex(data.index).to_period("d")
+        model = ARIMA(df["Open"], order=(3, 2, 3))
+        result = model.fit()
+        result.plot_predict(10,800)
 
 
 if __name__ == "__main__":
@@ -247,8 +279,10 @@ if __name__ == "__main__":
     #test.candlestick(data, plot)
     #test.bollinger(data, plot, plot2)
     #test.volume(data, plot)
+    #test.arima(data, plot)
     #test.volatilität(data, plot, plot2)
-    test.dailyreturns(data, plot)
+    #test.dailyreturns(data, plot)
+    #test.arima(data, plot)
     #test.risk(data, plot) #muss noch optimiert werden
     #test.macd(data, plot)
     #test.adx(data, plot) #noch nicht fertig
