@@ -191,7 +191,13 @@ class Mainframe:
             self.numargs = len(sig.parameters)
 
         # executing the function dynamically 
-        if self.numargs == 3 and data.getStock2() == False:
+        if self.numargs == 4:
+            self.plot = self.figure.add_subplot(211)
+            self.plot2 = self.figure.add_subplot(212, sharex=self.plot)
+            self.plot.set_ylabel("Price in USD")
+            self.plot2.set_ylabel("Price in USD")
+            self.args = (data, self.plot, self.plot2)
+        elif self.numargs == 3 and data.getStock2() == False:
             self.plot = self.figure.add_subplot(111)
             self.plot2 = None
             self.plot.set_ylabel("Price in USD")
