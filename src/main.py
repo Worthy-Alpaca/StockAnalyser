@@ -46,9 +46,8 @@ class Mainframe:
         self.dateLabel2 = tk.Label(self.mainframe).grid(row=1, column=5)
         """ Create UI elements """
         self.createMenu()
-        self.createButton(9, 0, "Plot", self.plotGraph)
-        self.createButton(9, 1, "Plain Data", self.plainData)
-        self.createButton(8, 0, "?", self.showToolTip)
+        self.createButton(8, 0, "Plot", self.plotGraph)
+        self.createButton(8, 1, "Plain Data", self.plainData)
         self.setFigure()
         self.createForms()
         self.tooltip = CreateToolTip(self.option, self.variable)
@@ -122,17 +121,6 @@ class Mainframe:
         self.date2.grid(row=0, column=5)
         self.option = tk.OptionMenu(self.mainframe, self.variable, *OptionList)
         self.option.grid(row=0, column=7, padx=(0, 0))
-
-    def showToolTip(self):
-        choice = self.variable.get().lower()
-        with open(config._path + "src/assets/tooltips.json") as file:
-            data = json.load(file)
-        try:
-            description = data["tooltips"][choice]
-            self.description = description
-        except Exception as e:
-            self.figure.clear()
-            return self.errorHandling(e)
 
     """ @description: dummy function that does nothing """
     def donothing(self):
