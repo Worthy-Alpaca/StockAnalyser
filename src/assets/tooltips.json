@@ -1,8 +1,7 @@
 {
     "tooltips": {
         "bollinger": "Ein Ausbruch durch das Lower Band ein Kaufsignal und ein Ausbruch durch da Upper Band  ein Verkaufssignal. Bei den Bollinger- Bändern ist allerdings Erfahrung nötig, um ein Kaufsignal nicht Misszuverstehen. Ein Kaufsignal kann ebenso einen Negativtrend einleiten",
-        "durchschnitt": "Kreutz die schnelle 38 Tage Linie die langsamere 200 Tage Linie von unten nach oben, so wird eine Kaufposition aufgebaut.
-        Schneidet die 38 Tage Linie hingegen die 200 Tage Linie von oben nach unten, so wird dies als Signal zum Verkaufen gewertet.",
+        "durchschnitt": "Kreutz die schnelle 38 Tage Linie die langsamere 200 Tage Linie von unten nach oben, so wird eine Kaufposition aufgebaut. Schneidet die 38 Tage Linie hingegen die 200 Tage Linie von oben nach unten, so wird dies als Signal zum Verkaufen gewertet.",
         "plaindata": "Abbildung des Adj Close",
         "candlestick": "Eine Reihe von aufeinanderfolgenden grünen Kerzen, die jeweils über ihrer Vorkerze schließen, deuten auf einen starken Aufwärtstrend hin. In einer Seitwärtsbewegung wechseln sich die Kerzenfarben ab. Ebenso deuten aufeinanderfolgende Kerzen mit langen oberen und unteren Dochten auf einen unentschlossenen Markt hin.",
         "volume": "Ein hohes Marktvolumen spricht für eine hohe Marktbreite, Martktiefe und Liquidität am Markt.",
@@ -10,6 +9,6 @@
         "dailyreturns": "Ein überwiegend positiver Wert gibt einen positiven Trend für den Abfragezeitraum an. Überwiegend negative Werte geben hingegen eine negativen Trend an.",
         "macd": "Wenn die MACD-Linie die Signallinie von unten nach oben kreuzt, entsteht ein Kaufsignal. Kreuzt die MACD-Linie hingegen die Signallinie von oben nach unten, wird ein Verkaufssignal generiert.",
         "rsi": "Aktien mit einem RSI 14 von über 70 Prozent werden als „überkauft“ betrachtet, Werte mit einem RSI unter 30 Prozent als „überverkauft“.",
-        "arima": "hier wieder die beschriftung",
+        "arima": "hier wieder die beschriftung"
     }
 }
