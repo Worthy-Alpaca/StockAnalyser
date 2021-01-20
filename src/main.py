@@ -6,9 +6,9 @@ Interface
 """
 
 """ Importing classes """
-from matplotlib.pyplot import text
 from modules import Input
 from modules import Analyse
+from modules import CreateToolTip
 
 """ Importing config """
 import config
@@ -48,9 +48,10 @@ class Mainframe:
         self.createMenu()
         self.createButton(9, 0, "Plot", self.plotGraph)
         self.createButton(9, 1, "Plain Data", self.plainData)
-        self.createButton(8, 0, "?", self.showToolTip, margin=0)
-        self.createForms()
+        self.createButton(8, 0, "?", self.showToolTip)
         self.setFigure()
+        self.createForms()
+        self.tooltip = CreateToolTip(self.option, self.variable)
         
     """ @description: method that creates the File menu """
     def createMenu(self):
@@ -69,11 +70,11 @@ class Mainframe:
        self.mainframe.config(menu=menubar)
 
     """ @description: method that creates a button """
-    def createButton(self, posX, posY, name, function, margin=None):
+    def createButton(self, posX, posY, text, function, margin=None):
         if margin == None:
             margin = 30
         self.button = tk.Button(
-            master=self.mainframe, height=1, width=10, text=name, command=function)
+            master=self.mainframe, height=1, width=10, text=text, command=function)
         self.button.grid(row=posY, column=posX, padx=(margin, 0))
 
     """ @description: returns all function names of a given class """
@@ -128,11 +129,7 @@ class Mainframe:
             data = json.load(file)
         try:
             description = data["tooltips"][choice]
-            self.tooltip = tk.Toplevel(self.mainframe)
-            self.tooltip.geometry("300x150")
-            tk.Label(self.tooltip, text=choice).pack()
-            tk.Label(self.tooltip, text=description).pack()
-            ttk.Button(self.tooltip, text="ok", command=self.tooltip.withdraw).pack()
+            self.description = description
         except Exception as e:
             self.figure.clear()
             return self.errorHandling(e)
