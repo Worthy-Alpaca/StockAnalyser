@@ -54,15 +54,15 @@ class Analyse:
             data, "start"), self.parseDate(data, "end"))
         style.use('ggplot')
 
-        df['100ma'] = df['Adj Close'].rolling(window=100, min_periods=0).mean()        # 100 Average
+        df['200ma'] = df['Adj Close'].rolling(window=100, min_periods=0).mean()        # 100 Average
         df['38ma'] = df['Adj Close'].rolling(window=38, min_periods=0).mean()
 
         plot.plot(df.index, df['Adj Close'])
-        plot.plot(df.index, df['100ma'])
+        plot.plot(df.index, df['200ma'])
         plot.plot(df.index, df['38ma'])
 
-        plot.set_title(f"30 & 100 Tage gleitender Durchschnitt von {data.getStock1()}")
-        plot.legend(( 'Adj Close', '100ma' ,'38ma'),loc='upper left')
+        plot.set_title(f"30 & 200 Tage gleitender Durchschnitt von {data.getStock1()}")
+        plot.legend(( 'Adj Close', '200ma' ,'38ma'),loc='upper left')
 
     def plaindata(self, data, plot):
         df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))["Adj Close"]
@@ -244,7 +244,7 @@ class Analyse:
         for value, label in zip(result, labels):
             print (label+' : '+str(value))
 
-        if result[1] <= 0.05
+        if result[1] <= 0.05:
             print( "strong evidence against the null hypothesis(Ho), reject the null hyp")
         else: 
             print("weak evidence against null hypothesis, indicating it is non-stationary")
