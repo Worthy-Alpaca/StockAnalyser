@@ -249,12 +249,12 @@ class Analyse:
         else: 
             print("weak evidence against null hypothesis, indicating it is non-stationary")
 
-        adfuller_test(df['Open'])
+        """ adfuller_test(df['Open'])
         fig = plt.figure(figsize=(12,8))
         ax1 = fig.add_subplot(211)
         fig = sm.graphics.tsa.plot_acf(df['Open'].dropna(),lags=40,ax=ax1)
         ax2 = fig.add_subplot(212)
-        fig = sm.graphics.tsa.plot_pacf(df['Open'].dropna(),lags=40,ax=ax2)
+        fig = sm.graphics.tsa.plot_pacf(df['Open'].dropna(),lags=40,ax=ax2) """
 
 #geht noch nicht
     def arima(self, data, plot):
