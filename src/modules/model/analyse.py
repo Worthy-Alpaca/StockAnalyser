@@ -122,7 +122,7 @@ class Analyse:
             plot2.set_title(f"30 Tage Bollinger Band {data.getStock2()}")
             plot2.legend(('Upper Band', 'Lower Band', '30 Day STD'), loc='upper left')
 
-    def volatilität(self, data, plot, plot2):
+    def volatility(self, data, plot, plot2):
 
         #https://medium.com/python-data/time-series-aggregation-techniques-with-python-a-look-at-major-cryptocurrencies-a9eb1dd49c1b
 
