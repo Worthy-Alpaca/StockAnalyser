@@ -38,13 +38,13 @@ print(apple.history(start=("2019-02-01"), end=("2019-03-07")))
 # plt.title("Apple und ETF Chart")
 # plt.legend()
 
-data = yf.download("ZPRX.DE", start="2014-02-01", end="2019-02-25")
+#data = yf.download("ZPRX.DE", start="2014-02-01", end="2019-02-25")
 
-plt.figure()
+#plt.figure()
 # data["Close"].plot()
-data["Open"].plot()
-plt.title("ETF1  Chart")
-plt.legend()
+#data["Open"].plot()
+# #plt.title("ETF1  Chart")
+#lt.legend()
 
 # data = yf.download("XWD.TO", start="2019-02-01", end="2019-02-25")
 

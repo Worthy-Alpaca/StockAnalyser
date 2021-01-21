@@ -1,0 +1,15 @@
+{
+    "tooltips": {
+        "bollinger": "Ein Ausbruch durch das Lower Band ein Kaufsignal und ein Ausbruch durch da Upper Band ein Verkaufssignal. Bei den Bollinger-Baendern ist allerdings Erfahrung noetig, um ein Kaufsignal nicht Misszuverstehen. Ein Kaufsignal kann ebenso einen Negativtrend einleiten",
+        "durchschnitt": "Kreutz die schnelle 38 Tage Linie die langsamere 200 Tage Linie von unten nach oben, so wird eine Kaufposition aufgebaut. Schneidet die 38 Tage Linie hingegen die 200 Tage Linie von oben nach unten, so wird dies als Signal zum Verkaufen gewertet.",
+        "plaindata": "Abbildung des Adj Close",
+        "candlestick": "Eine Reihe von aufeinanderfolgenden gruenen Kerzen, die jeweils ueber ihrer Vorkerze schließen, deuten auf einen starken Aufwaertstrend hin. In einer Seitwaertsbewegung wechseln sich die Kerzenfarben ab. Ebenso deuten aufeinanderfolgende Kerzen mit langen oberen und unteren Dochten auf einen unentschlossenen Markt hin.",
+        "volume": "Ein hohes Marktvolumen spricht fuer eine hohe Marktbreite, Martktiefe und Liquiditaet am Markt.",
+        "volatility": "Die Volaritaet zeigt auf, wie stark der Kurs im gleitenden Durchschnitt die letzten 20 Tage geschwankt ist",
+        "dailyreturns": "Ein ueberwiegend positiver Wert gibt einen positiven Trend fuer den Abfragezeitraum an. ueberwiegend negative Werte geben hingegen eine negativen Trend an.",
+        "macd": "Wenn die MACD-Linie die Signallinie von unten nach oben kreuzt, entsteht ein Kaufsignal. Kreuzt die MACD-Linie hingegen die Signallinie von oben nach unten, wird ein Verkaufssignal generiert.",
+        "rsi": "Aktien mit einem RSI 14 von ueber 70 Prozent werden als „ueberkauft“ betrachtet, Werte mit einem RSI unter 30 Prozent als „ueberverkauft“.",
+        "arima": "hier wieder die beschriftung",
+        "adfuller_test": "testing"
+    }
+}
