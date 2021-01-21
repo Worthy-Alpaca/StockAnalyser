@@ -23,7 +23,7 @@ import os
 import sys
 
 """ Import Arima Modell """
-from statsmodels.tsa.arima_model import ARIMA
+from statsmodels.tsa.arima.model import ARIMA
 from statsmodels.tsa.stattools import adfuller
 import statsmodels.api as sm
 
@@ -53,26 +53,26 @@ class Analyse:
         df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
         style.use('ggplot')
 
-        df['200ma'] = df['Adj Close'].rolling(window=100, min_periods=0).mean()        # 100 Average
+        df['200ma'] = df['Adj Close'].rolling(window=200, min_periods=0).mean()        # 100 Average
         df['38ma'] = df['Adj Close'].rolling(window=38, min_periods=0).mean()
 
         plot.plot(df.index, df['Adj Close'])
         plot.plot(df.index, df['200ma'])
         plot.plot(df.index, df['38ma'])
 
-        plot.set_title(f"30 & 200 Tage gleitender Durchschnitt von {data.getStock1()}")
+        plot.set_title(f"38 & 200 Tage gleitender Durchschnitt von {data.getStock1()}")
         plot.legend(( 'Adj Close', '200ma' ,'38ma'),loc='upper left')
         
         if data.getStock2() != False:
             df2 = web.DataReader(data.getStock2(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
-            df2['200ma'] = df2['Adj Close'].rolling(window=100, min_periods=0).mean()        # 100 Average
+            df2['200ma'] = df2['Adj Close'].rolling(window=200, min_periods=0).mean()        # 100 Average
             df2['38ma'] = df2['Adj Close'].rolling(window=38, min_periods=0).mean()
 
             plot2.plot(df2.index, df2['Adj Close'])
             plot2.plot(df2.index, df2['200ma'])
             plot2.plot(df2.index, df2['38ma'])
 
-            plot2.set_title(f"30 & 200 Tage gleitender Durchschnitt von {data.getStock2()}")
+            plot2.set_title(f"38 & 200 Tage gleitender Durchschnitt von {data.getStock2()}")
             plot2.legend(('Adj Close', '200ma', '38ma'), loc='upper left')
 
 
@@ -80,9 +80,13 @@ class Analyse:
         df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))["Adj Close"]
         style.use('ggplot')
         plot.plot(df)
+        plot.set_title(f"Adj Close von {data.getStock1()}")
+        plot.legend((f'Adj Close {data.getStock1()}'), loc='upper left')
         if data.getStock2() != False:
             df2 = web.DataReader(data.getStock2(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))["Adj Close"]
+            plot.set_title(f"Adj Close von {data.getStock1()} und {data.getStock2()}")
             plot.plot(df2)
+            plot.legend((f'Adj Close {data.getStock1()}', f'Adj Close {data.getStock2()}'), loc='upper left')
 
     def candlestick(self, data, plot, plot2):
 
@@ -97,23 +101,29 @@ class Analyse:
         plot.set_title(f"Candlesticks von {data.getStock1()}")
         candlestick_ohlc(plot, df_ohlc.values, width=4, colorup='g')
         if data.getStock2() != False:
-            df2 = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
+            df2 = web.DataReader(data.getStock2(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
 
             df_ohlc2 = df2['Adj Close'].resample('10D').ohlc()
             df_ohlc2.reset_index(inplace=True)
             df_ohlc2['Date'] = df_ohlc2['Date'].map(mdates.date2num)
 
             plot2.xaxis_date()
-            plot2.set_title(f"Candlesticks von {data.getStock1()}")
+            plot2.set_title(f"Candlesticks von {data.getStock2()}")
             candlestick_ohlc(plot2, df_ohlc2.values, width=4, colorup='g')
 
     def volume(self, data, plot):
         style.use('ggplot')
-        df = web.DataReader([data.getStock1(), data.getStock2()], 'yahoo', self.parseDate(
+        plot.set_ylabel("")
+        stocks = [data.getStock1()]
+        plot.set_title(f"Volumen von {data.getStock1()}")
+        if data.getStock2() != False:
+            stocks.append(data.getStock2())
+            plot.set_title(f"Volumen von {data.getStock1()} und {data.getStock2()}")
+
+        df = web.DataReader(stocks, 'yahoo', self.parseDate(
             data, "start"), self.parseDate(data, "end"))
-        plot.set_title(f"Volumen von {data.getStock1()} und {data.getStock2()}")
         plot.plot(df.index, df['Volume'])
-        plot.legend((data.getStock1(), data.getStock2()), loc='upper left')
+        plot.legend((stocks), loc='upper left')
 
     def bollinger(self, data, plot, plot2):
         
@@ -153,18 +163,20 @@ class Analyse:
 
         plot.plot(df[['Adj Close']])
         plot2.plot(df[['30_day_volatility']])
-        
-        plot.legend((data.getStock1(), data.getStock2()), loc='upper left')
+        plot2.set_ylabel("")
         plot.set_title(f"Kursverlauf von {data.getStock1()}")
         plot2.set_title(f"30 Tage Volatilität von {data.getStock1()}")  
          
         if data.getStock2() != False:   
             plot.set_title(f"Kursverlauf von {data.getStock1()} und {data.getStock2()}")
             plot2.set_title(f"30 Tage Volatilität von {data.getStock1()} und {data.getStock2()}")
+            
             df2 = web.DataReader(data.getStock2(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
             df2['30_day_volatility'] = df2['Close'].rolling(window=20).std()
             plot.plot(df2[['Adj Close']])
             plot2.plot(df2[['30_day_volatility']])
+            plot.legend((data.getStock1(), data.getStock2()), loc='upper left')
+            plot2.legend((data.getStock1(), data.getStock2()), loc='upper left')
 
     def dailyreturns(self, data, plot):
         style.use('ggplot')
@@ -185,18 +197,33 @@ class Analyse:
         plot.set_title(f"Daily returns von {data.getStock1()} und {data.getStock2()}")
         plot.legend((data.getStock1(), data.getStock2()), loc='upper left')
 
-    def macd(self, data, plot):
+    def macd(self, data, plot, plot2, both=True):
+        plot.set_title(f"Adj Close von {data.getStock1()}")
+        plot2.set_title(f"MACD und Signallinie von {data.getStock1()}")
+        plot2.set_ylabel("")
+        stocks = [data.getStock1()]
+        stockslgd = [f"{data.getStock1()} MACD", f"{data.getStock1()} Signal"]
+        if data.getStock2() != False:
+            stocks.append(data.getStock2())
+            stockslgd.append(f"{data.getStock2()} MACD")
+            stockslgd.append(f"{data.getStock2()} Signal")
+            plot.set_title(f"Adj Close von {data.getStock1()} und {data.getStock2()}")
+            plot2.set_title(f"MACD und Signallinie von {data.getStock1()} und {data.getStock2()}")
 
         style.use('ggplot')
-        df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
-        df['ema12'] = df['Adj Close'].ewm(span=12).mean()
-        df['ema26'] = df['Adj Close'].ewm(span=26).mean()
-        df['MACD'] = (df['ema12']-df['ema26'])
+        for stock in stocks:
+            df = web.DataReader(stock, 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
+            df['ema12'] = df['Adj Close'].ewm(span=12).mean()
+            df['ema26'] = df['Adj Close'].ewm(span=26).mean()
+            df['MACD'] = (df['ema12']-df['ema26'])
 
-        df['Signal'] = df['MACD'].ewm(span=9).mean()
-        plot.plot(df[['Adj Close', 'MACD', 'Signal']])
-        plot.set_title(f"Adj Close MACD und Signallinie von {data.getStock1()}")
-        plot.legend(( 'Adj Close','MACD', 'Signal'),loc='upper left')
+            df['Signal'] = df['MACD'].ewm(span=9).mean()
+            plot.plot(df[['Adj Close']])
+            plot2.plot(df[['MACD', 'Signal']])
+        
+        plot2.legend((stockslgd), loc='upper left')
+        plot.legend((stocks),loc='upper left')
+            
         #print("Hello")
 
     """ def risk(self, data, plot):
@@ -261,47 +288,43 @@ class Analyse:
             # Compare graphically
             plot.plot(RSI1)
             plot2.plot(RSI2)
-            plot.legend(['RSI via EWMA'])
-            plot2.legend(['RSI via SMA'])
-            plot.set_ylabel("Something something")
-
-#geht noch nicht
-    def adfuller_test(self, data, plot):
-        df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
-
-        result = adfuller(df)
-        labels = ['ADF Test Statistic', 'p-value', '#Lags Used', 'Number of Observations']
-        for value, label in zip(result, labels):
-            print (label+' : '+str(value))
-
-        if result[1] <= 0.05:
-            print( "strong evidence against the null hypothesis(Ho), reject the null hyp")
-        else: 
-            print("weak evidence against null hypothesis, indicating it is non-stationary")
-
-        """ adfuller_test(df['Open'])
-        fig = plt.figure(figsize=(12,8))
-        ax1 = fig.add_subplot(211)
-        fig = sm.graphics.tsa.plot_acf(df['Open'].dropna(),lags=40,ax=ax1)
-        ax2 = fig.add_subplot(212)
-        fig = sm.graphics.tsa.plot_pacf(df['Open'].dropna(),lags=40,ax=ax2) """
+            plot.set_title('RSI via EWMA')
+            plot2.set_title('RSI via SMA')
+            plot.legend(stocks)
+            plot2.legend(stocks)
+            plot.set_ylabel("")
 
 #geht noch nicht
     def arima(self, data, plot):
         df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
-        df = yf.download("data.getStock1()", self.parseDate(data, "start"),self.parseDate(data, "end"))
-        df.index = pd.DatetimeIndex(data.index).to_period("d")
-        model = ARIMA(df["Open"], order=(3, 2, 3))
-        result = model.fit()
-        result.plot_predict(10,800)
+        #df = yf.download("data.getStock1()", self.parseDate(data, "start"),self.parseDate(data, "end"))
+        df.index = pd.DatetimeIndex(df.index).to_period("d")
+        #model = ARIMA(df["Open"], order=(3, 2, 3))
+        #result = model.fit()
+        #result.plot_predict(start=dt.datetime(2020, 12, 20), end=dt.datetime(2021, 1, 20))
+        X = df.values
+        size = int(len(X) * 0.66)
+        train, test = X[0:size], X[size:len(X)]
+        history = [x for x in train]
+        predictions = list()
+        # walk-forward validation
+        for t in range(len(test)):
+            model = ARIMA(history, order=(5, 1, 0))
+            model_fit = model.fit()
+            output = model_fit.forecast()
+            yhat = output[0]
+            predictions.append(yhat)
+            obs = test[t]
+            history.append(obs)
+            print('predicted=%f, expected=%f' % (yhat, obs))
 
 
 if __name__ == "__main__":
     data = Input()
     data.setFirstStock("AAPL")
     data.setSecondStock("GOOGL")
-    data.setStartDate("2010-12-12")
-    data.setEndDate("2020-12-12")
+    data.setStartDate("2018-01-01")
+    data.setEndDate("2021-01-01")
     plot = plt.subplot2grid((6, 1), (0, 0), rowspan=5, colspan=1)
     #plot2 = plt.subplot2grid((6, 1), (5, 0), rowspan=5, colspan=1)
     test = Analyse()
@@ -312,7 +335,7 @@ if __name__ == "__main__":
     #test.arima(data, plot)
     #test.volatilität(data, plot, plot2)
     #test.dailyreturns(data, plot)
-    #test.arima(data, plot)
+    test.arima(data, plot)
     #test.risk(data, plot) #muss noch optimiert werden
     #test.macd(data, plot)
     #test.adx(data, plot) #noch nicht fertig
