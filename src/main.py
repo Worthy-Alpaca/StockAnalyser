@@ -9,6 +9,8 @@ Interface
 from modules import Input
 from modules import Analyse
 from modules import CreateToolTip
+from modules import Controller
+from modules import ErrorHandling
 
 """ Importing config """
 import config
@@ -28,7 +30,6 @@ import json
 import sys
 import random
 import string
-from inspect import signature
 
 class Mainframe:
     def __init__(self):
@@ -40,8 +41,6 @@ class Mainframe:
         """ Declaring things for later use """
         self.calDate1 = None
         self.calDate2 = None
-        self.plot = None
-        self.plot2 = None
         self.dateLabel1 = tk.Label(self.mainframe).grid(row=1, column=3)
         self.dateLabel2 = tk.Label(self.mainframe).grid(row=1, column=5)
         """ Create UI elements """
@@ -50,7 +49,9 @@ class Mainframe:
         self.createButton(8, 1, "Plain Data", self.plainData)
         self.setFigure()
         self.createForms()
+        """ Initiating classes for later use """
         self.tooltip = CreateToolTip(self.option, self.variable)
+        self.error = ErrorHandling(self.figure, self.canvas)
         
     """ @description: method that creates the File menu """
     def createMenu(self):
@@ -124,11 +125,7 @@ class Mainframe:
 
     """ @description: dummy function that does nothing """
     def donothing(self):
-        chart = Analyse()
-        choice = self.variable.get().lower()
-        method = getattr(chart, choice)
-        sig = signature(method)
-        print(len(sig.parameters))
+        self.figure.clear()
 
     """ @description: display the first calendar """
     def showCal1(self):
@@ -179,65 +176,16 @@ class Mainframe:
             data = self.parseInput()
         except Exception as e:
             self.figure.clear()
-            return self.errorHandling(e)
+            return self.error.handle(e)
         if data == None:
-            self.errorHandling("Not enough input")
+            self.error.handle("Not enough input")
             return 
         chart = Analyse()
         choice = [self.variable.get()]
         for c in choice:
-            method = getattr(chart, c)
-            sig = signature(method)
-            self.numargs = len(sig.parameters)
-
-        # executing the function dynamically 
-        if self.numargs == 4:
-            self.plot = self.figure.add_subplot(211)
-            self.plot2 = self.figure.add_subplot(212, sharex=self.plot)
-            self.plot.set_ylabel("Price in USD")
-            self.plot2.set_ylabel("Price in USD")
-            self.args = (data, self.plot, self.plot2)
-        elif self.numargs == 3 and data.getStock2() == False:
-            self.plot = self.figure.add_subplot(111)
-            self.plot2 = None
-            self.plot.set_ylabel("Price in USD")
-            self.args = (data, self.plot, self.plot2)
-        elif self.numargs == 3:
-            self.plot = self.figure.add_subplot(211)
-            self.plot2 = self.figure.add_subplot(212, sharex=self.plot)
-            self.plot.set_ylabel("Price in USD")
-            self.plot2.set_ylabel("Price in USD")
-            self.args = (data, self.plot, self.plot2)
-        else:
-            self.plot = self.figure.add_subplot(111)
-            self.plot.set_ylabel("Price in USD")
-            self.args = (data, self.plot)        
-
-        try:
-            for c in choice:
-                getattr(chart, c)(*self.args)
-        except Exception as e:
-            self.figure.clear()
-            return self.errorHandling(e)
-            
+            self.method = getattr(chart, c)
+        Controller(self.figure, data, self.method, self.error).calculate()  
         # refresh the canvas
-        self.canvas.draw()
-
-    """ @description: handling errors """
-    def errorHandling(self, error):
-        self.errorPlot = self.figure.add_subplot(312)
-        style.use('ggplot')
-        self.errorPlot.axis('off')
-        if error == "Not enough input":
-            self.errorPlot.set_title(f"Error: {error}", color='C7')
-        elif str(error) == "No data fetched for symbol False using YahooDailyReader":
-            self.errorPlot.set_title(f"Error: Entered stock could not be found!", color='C7')
-        else:
-            errorcode = self.errorCode(8)
-            with open(config._path + "data/errors.txt", "a") as f:
-                f.write(f"{error} : {errorcode}\n")
-                f.close()
-            self.errorPlot.set_title(f"An error occured. Please report to an application administrator. Errorcode: {errorcode}", color='C7')
         self.canvas.draw()
 
     """ @description: create an error code """
