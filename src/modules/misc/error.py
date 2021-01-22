@@ -25,15 +25,13 @@ class ErrorHandling:
         if error == "Not enough input":
             self.errorPlot.set_title(f"Error: {error}", color='C7')
         elif str(error) == "No data fetched for symbol False using YahooDailyReader":
-            self.errorPlot.set_title(
-                f"Error: Entered stock could not be found!", color='C7')
+            self.errorPlot.set_title(f"Error: Entered stock could not be found!", color='C7')
         else:
             errorcode = self.errorCode()
             with open(config._path + "data/errors.txt", "a") as f:
                 f.write(f"{error} : {errorcode}\n")
                 f.close()
-            self.errorPlot.set_title(
-                f"An error occured. Please report to an application administrator. Errorcode: {errorcode}", color='C7')
+            self.errorPlot.set_title(f"An error occured. Please report to an application administrator. Errorcode: {errorcode}", color='C7')
         self.canvas.draw()
 
     def errorCode(self, length=8):

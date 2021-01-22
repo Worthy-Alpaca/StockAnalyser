@@ -11,6 +11,7 @@ from modules import Analyse
 from modules import CreateToolTip
 from modules import Controller
 from modules import ErrorHandling
+from gui import Gui
 
 """ Importing config """
 import config
@@ -56,10 +57,7 @@ class Mainframe:
        filemenu.add_command(label="New", command=self.new)
        filemenu.add_command(label="Load", command=self.open)
        filemenu.add_command(label="Save", command=self.saveAs)
-       filemenu.add_command(label="Save as...", command=self.saveAs)
-       filemenu.add_command(label="Close", command=self.close)
        filemenu.add_separator()
-
        filemenu.add_command(label="Exit", command=self.close)
        menubar.add_cascade(label="File", menu=filemenu)
 
@@ -174,13 +172,13 @@ class Mainframe:
             self.figure.clear()
             return self.error.handle(e)
         if data == None:
-            self.error.handle("Not enough input")
-            return 
+            return self.error.handle("Not enough input")
+             
         chart = Analyse()
         choice = [self.variable.get()]
         for c in choice:
             self.method = getattr(chart, c)
-        Controller(self.figure, data, self.method, self.error).calculate()  
+        Controller().test()  
         # refresh the canvas
         self.canvas.draw()
 
@@ -212,6 +210,7 @@ class Mainframe:
         
     """ @description: function to clear all inputs """
     def new(self):
+        self.figure.clear()
         self.stock1.delete(0, 'end')
         self.stock2.delete(0, 'end')
 
