@@ -23,13 +23,9 @@ from tkinter import filedialog, PhotoImage, ttk
 from tkcalendar import Calendar
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
-from matplotlib import style
 
 """ Importing additional modules """
 import json
-import sys
-import random
-import string
 
 class Mainframe:
     def __init__(self):
@@ -187,12 +183,6 @@ class Mainframe:
         Controller(self.figure, data, self.method, self.error).calculate()  
         # refresh the canvas
         self.canvas.draw()
-
-    """ @description: create an error code """
-    def errorCode(self, length):
-        letters = string.ascii_lowercase
-        result_str = ''.join(random.choice(letters) for i in range(length))
-        return result_str
 
     """ @description: displays just plain data, no calculations """
     def plainData(self):
