@@ -10,24 +10,29 @@ import os
 import sys
 from inspect import signature
 
+from canvas import Canvas
+
+
+
 """ Adding current directory to path """
 PACKAGE_PARENT = '../..'
 SCRIPT_DIR = os.path.dirname(os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__))))
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 
+from modules.misc.error import ErrorHandling
 
-class Controller(object):
-    def __init__(self, figure, data, function, error):
-        self.figure = figure
+class Controller(Canvas):
+    def __init__(self, frame, data):
+        super().__init__(frame)
         self.data = data
-        self.function = function
         self.plot = None
         self.plot2 = None
         self.funcargs = []
         self.args = [self.data]
-        self.error = error
 
-    def calculate(self):
+    def calculate(self, function):
+        self.function = function
+        self.figure.clear()
         sig = signature(self.function)
         for n in sig.parameters:
             self.funcargs.append(n)
@@ -43,8 +48,8 @@ class Controller(object):
         try:
             self.function(*tuple(self.args))
         except Exception as e:
-            self.error.handle(e)
-
+            ErrorHandling(self.mainframe).handle(e)
+        self.canvas.draw()
         
     def onePlot(self):
         self.plot = self.figure.add_subplot(111)
@@ -61,5 +66,5 @@ class Controller(object):
         self.args.append(self.plot)
         self.args.append(self.plot2)
 
-    def clear(self):
-        self.figure.clear()
+    def test(self):
+        pass
