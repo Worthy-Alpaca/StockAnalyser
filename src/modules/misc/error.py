@@ -5,15 +5,18 @@ Created on 22.01.2020
 Class to handle Errors
 """
 
+from canvas import Canvas
 import config
 from matplotlib import style
 import random
 import string
 
-class ErrorHandling:
-    def __init__(self, figure, canvas):
-        self.figure = figure
-        self.canvas = canvas
+
+
+class ErrorHandling(Canvas):
+
+    def __init__(self, frame):
+        super().__init__(frame)
 
     def handle(self, error):
         self.figure.clear()

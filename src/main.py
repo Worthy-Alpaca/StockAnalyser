@@ -6,12 +6,12 @@ Interface
 """
 
 """ Importing classes """
+from canvas import Canvas
 from modules import Input
 from modules import Analyse
 from modules import CreateToolTip
 from modules import Controller
 from modules import ErrorHandling
-from gui import Gui
 
 """ Importing config """
 import config
@@ -22,13 +22,11 @@ import tkinter as tk
 """ Importing packages """
 from tkinter import filedialog, PhotoImage, ttk
 from tkcalendar import Calendar
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
-from matplotlib.figure import Figure
 
 """ Importing additional modules """
 import json
 
-class Mainframe:
+class Main:
     def __init__(self):
         self.mainframe = tk.Tk()
         self.mainframe.title("STONKS analysis")
@@ -44,11 +42,11 @@ class Mainframe:
         self.createMenu()
         self.createButton(8, 0, "Plot", self.plotGraph)
         self.createButton(8, 1, "Plain Data", self.plainData)
-        self.setFigure()
+        Canvas(self.mainframe)
         self.createForms()
         """ Initiating classes for later use """
         self.tooltip = CreateToolTip(self.option, self.variable)
-        self.error = ErrorHandling(self.figure, self.canvas)
+        self.error = ErrorHandling(self.mainframe)
         
     """ @description: method that creates the File menu """
     def createMenu(self):
@@ -119,7 +117,7 @@ class Mainframe:
 
     """ @description: dummy function that does nothing """
     def donothing(self):
-        self.figure.clear()
+        pass
 
     """ @description: display the first calendar """
     def showCal1(self):
@@ -165,52 +163,29 @@ class Mainframe:
 
     """ @description: function that initiates the calculations """
     def plotGraph(self):
-        self.figure.clear()
         try:
             data = self.parseInput()
         except Exception as e:
-            self.figure.clear()
             return self.error.handle(e)
         if data == None:
             return self.error.handle("Not enough input")
              
         chart = Analyse()
-        choice = [self.variable.get()]
-        for c in choice:
-            self.method = getattr(chart, c)
-        Controller().test()  
-        # refresh the canvas
-        self.canvas.draw()
+        choice = self.variable.get()
+        Controller(self.mainframe, data).calculate(getattr(chart, choice))
 
     """ @description: displays just plain data, no calculations """
     def plainData(self):
-        data = self.parseInput()
+        try:
+            data = self.parseInput()
+        except Exception as e:
+            return self.error.handle(e)
         chart = Analyse()
-        # clearing the figure
-        self.figure.clear()
-        # creating new subplot
-        self.plot = self.figure.add_subplot(111)
-        self.plot.set_ylabel("Price in USD")
-        # executing the function dynamically
-        chart.plaindata(data, self.plot)
-        # refresh the canvas
-        self.canvas.draw()
-       
-    """ @description: create the chart foundation """
-    def setFigure(self):
-        self.figure = Figure(figsize=(11.6, 6.5), dpi=100)
-        self.canvas = FigureCanvasTkAgg(self.figure, master=self.mainframe)
-        self.canvas.draw()
-        self.canvas.get_tk_widget().grid(
-            row=3, column=0, columnspan=10, rowspan=10, padx=(20, 20))
-        self.toolbar = NavigationToolbar2Tk(self.canvas, self.mainframe, pack_toolbar=False)
-        self.toolbar.update()
-        self.toolbar.grid(
-            row=13, column=0, columnspan=10, rowspan=10, padx=(20, 20))
+        Controller(self.mainframe, data, getattr(chart, 'plaindata')).calculate()
         
     """ @description: function to clear all inputs """
     def new(self):
-        self.figure.clear()
+        ##self.figure.clear()
         self.stock1.delete(0, 'end')
         self.stock2.delete(0, 'end')
 
@@ -263,5 +238,5 @@ class Mainframe:
      
 
 if __name__ == "__main__":
-    root = Mainframe()
+    root = Main()
     root.run()
