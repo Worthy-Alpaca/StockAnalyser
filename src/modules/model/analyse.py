@@ -11,8 +11,6 @@ import pandas as pd
 import datetime as dt
 import matplotlib.pyplot as plt
 
-from modules.controller.controller import Controller
-
 """ Importing Packages """
 from matplotlib import style
 import pandas_datareader.data as web
