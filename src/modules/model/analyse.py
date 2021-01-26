@@ -10,9 +10,6 @@ Analyse
 import pandas as pd
 import datetime as dt
 import matplotlib.pyplot as plt
-import yfinance as yf
-
-from modules.controller.controller import Controller
 
 """ Importing Packages """
 from matplotlib import style
