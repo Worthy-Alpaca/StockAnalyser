@@ -8,8 +8,10 @@ Analyse
 
 """ Importing Modules """
 import pandas as pd
+import yfinance as yf
 import datetime as dt
 import matplotlib.pyplot as plt
+import warnings
 
 """ Importing Packages """
 from matplotlib import style
@@ -22,7 +24,7 @@ import os
 import sys
 
 """ Import Arima Modell """
-from statsmodels.tsa.arima.model import ARIMA
+from statsmodels.tsa.arima_model import ARIMA
 from statsmodels.tsa.stattools import adfuller
 import statsmodels.api as sm
 
@@ -296,6 +298,7 @@ class Analyse:
             plot.set_ylabel("")
 
 #geht noch nicht
+    '''
     def arima(self, data, plot):
         df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
         #df = yf.download("data.getStock1()", self.parseDate(data, "start"),self.parseDate(data, "end"))
@@ -318,13 +321,21 @@ class Analyse:
             obs = test[t]
             history.append(obs)
             print('predicted=%f, expected=%f' % (yhat, obs))
+    '''
+
+    def arima(self, data, plot):
+        warnings.filterwarnings("ignore")
+        df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
+        model = ARIMA(df["Open"], order=(3,2,3))
+        result = model.fit()
+        result.plot_predict(15,580)
 
 
 if __name__ == "__main__":
     data = Input()
     data.setFirstStock("AAPL")
     data.setSecondStock("GOOGL")
-    data.setStartDate("2018-01-01")
+    data.setStartDate("2018-10-01")
     data.setEndDate("2021-01-01")
     plot = plt.subplot2grid((6, 1), (0, 0), rowspan=5, colspan=1)
     #plot2 = plt.subplot2grid((6, 1), (5, 0), rowspan=5, colspan=1)
@@ -333,7 +344,7 @@ if __name__ == "__main__":
     #test.candlestick(data, plot)
     #test.bollinger(data, plot, plot2)
     #test.volume(data, plot)
-    #test.arima(data, plot)
+    test.arima(data, plot)
     #test.volatilität(data, plot, plot2)
     #test.dailyreturns(data, plot)
     test.arima(data, plot)
