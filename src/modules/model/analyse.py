@@ -328,7 +328,10 @@ class Analyse:
         df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
         model = ARIMA(df["Open"], order=(3,2,3))
         result = model.fit()
-        result.plot_predict(15,580)
+        #test = result.plot_predict(10,580)
+        #print(test)
+        test = result.predict(start=10, end=580)
+        plot.plot(test)
 
 
 if __name__ == "__main__":
@@ -344,7 +347,7 @@ if __name__ == "__main__":
     #test.candlestick(data, plot)
     #test.bollinger(data, plot, plot2)
     #test.volume(data, plot)
-    test.arima(data, plot)
+    #test.arima(data, plot)
     #test.volatilität(data, plot, plot2)
     #test.dailyreturns(data, plot)
     test.arima(data, plot)
