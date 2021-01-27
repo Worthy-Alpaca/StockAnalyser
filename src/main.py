@@ -6,9 +6,12 @@ Interface
 """
 
 """ Importing classes """
+from canvas import Canvas
 from modules import Input
 from modules import Analyse
 from modules import CreateToolTip
+from modules import Controller
+from modules import ErrorHandling
 
 """ Importing config """
 import config
@@ -19,18 +22,11 @@ import tkinter as tk
 """ Importing packages """
 from tkinter import filedialog, PhotoImage, ttk
 from tkcalendar import Calendar
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
-from matplotlib.figure import Figure
-from matplotlib import style
 
 """ Importing additional modules """
 import json
-import sys
-import random
-import string
-from inspect import signature
 
-class Mainframe:
+class Main:
     def __init__(self):
         self.mainframe = tk.Tk()
         self.mainframe.title("STONKS analysis")
@@ -40,17 +36,17 @@ class Mainframe:
         """ Declaring things for later use """
         self.calDate1 = None
         self.calDate2 = None
-        self.plot = None
-        self.plot2 = None
         self.dateLabel1 = tk.Label(self.mainframe).grid(row=1, column=3)
         self.dateLabel2 = tk.Label(self.mainframe).grid(row=1, column=5)
         """ Create UI elements """
         self.createMenu()
         self.createButton(8, 0, "Plot", self.plotGraph)
         self.createButton(8, 1, "Plain Data", self.plainData)
-        self.setFigure()
+        Canvas(self.mainframe)
         self.createForms()
+        """ Initiating classes for later use """
         self.tooltip = CreateToolTip(self.option, self.variable)
+        self.error = ErrorHandling(self.mainframe)
         
     """ @description: method that creates the File menu """
     def createMenu(self):
@@ -59,10 +55,7 @@ class Mainframe:
        filemenu.add_command(label="New", command=self.new)
        filemenu.add_command(label="Load", command=self.open)
        filemenu.add_command(label="Save", command=self.saveAs)
-       filemenu.add_command(label="Save as...", command=self.saveAs)
-       filemenu.add_command(label="Close", command=self.close)
        filemenu.add_separator()
-
        filemenu.add_command(label="Exit", command=self.close)
        menubar.add_cascade(label="File", menu=filemenu)
 
@@ -124,11 +117,7 @@ class Mainframe:
 
     """ @description: dummy function that does nothing """
     def donothing(self):
-        chart = Analyse()
-        choice = self.variable.get().lower()
-        method = getattr(chart, choice)
-        sig = signature(method)
-        print(len(sig.parameters))
+        pass
 
     """ @description: display the first calendar """
     def showCal1(self):
@@ -172,106 +161,29 @@ class Mainframe:
 
     """ @description: function that initiates the calculations """
     def plotGraph(self):
-        self.figure.clear()
         try:
             data = self.parseInput()
         except Exception as e:
-            self.figure.clear()
-            return self.errorHandling(e)
+            return self.error.handle(e)
         if data == None:
-            self.errorHandling("Not enough input")
-            return 
+            return self.error.handle("Not enough input")
+             
         chart = Analyse()
-        choice = [self.variable.get()]
-        for c in choice:
-            method = getattr(chart, c)
-            sig = signature(method)
-            self.numargs = len(sig.parameters)
-
-        # executing the function dynamically 
-        if self.numargs == 4:
-            self.plot = self.figure.add_subplot(211)
-            self.plot2 = self.figure.add_subplot(212, sharex=self.plot)
-            self.plot.set_ylabel("Price in USD")
-            self.plot2.set_ylabel("Price in USD")
-            self.args = (data, self.plot, self.plot2)
-        elif self.numargs == 3 and data.getStock2() == False:
-            self.plot = self.figure.add_subplot(111)
-            self.plot2 = None
-            self.plot.set_ylabel("Price in USD")
-            self.args = (data, self.plot, self.plot2)
-        elif self.numargs == 3:
-            self.plot = self.figure.add_subplot(211)
-            self.plot2 = self.figure.add_subplot(212, sharex=self.plot)
-            self.plot.set_ylabel("Price in USD")
-            self.plot2.set_ylabel("Price in USD")
-            self.args = (data, self.plot, self.plot2)
-        else:
-            self.plot = self.figure.add_subplot(111)
-            self.plot.set_ylabel("Price in USD")
-            self.args = (data, self.plot)        
-
-        try:
-            for c in choice:
-                getattr(chart, c)(*self.args)
-        except Exception as e:
-            self.figure.clear()
-            return self.errorHandling(e)
-            
-        # refresh the canvas
-        self.canvas.draw()
-
-    """ @description: handling errors """
-    def errorHandling(self, error):
-        self.errorPlot = self.figure.add_subplot(312)
-        style.use('ggplot')
-        self.errorPlot.axis('off')
-        if error == "Not enough input":
-            self.errorPlot.set_title(f"Error: {error}", color='C7')
-        elif str(error) == "No data fetched for symbol False using YahooDailyReader":
-            self.errorPlot.set_title(f"Error: Entered stock could not be found!", color='C7')
-        else:
-            errorcode = self.errorCode(8)
-            with open(config._path + "data/errors.txt", "a") as f:
-                f.write(f"{error} : {errorcode}\n")
-                f.close()
-            self.errorPlot.set_title(f"An error occured. Please report to an application administrator. Errorcode: {errorcode}", color='C7')
-        self.canvas.draw()
-
-    """ @description: create an error code """
-    def errorCode(self, length):
-        letters = string.ascii_lowercase
-        result_str = ''.join(random.choice(letters) for i in range(length))
-        return result_str
+        choice = self.variable.get()
+        Controller(self.mainframe, data).calculate(getattr(chart, choice))
 
     """ @description: displays just plain data, no calculations """
     def plainData(self):
-        data = self.parseInput()
+        try:
+            data = self.parseInput()
+        except Exception as e:
+            return self.error.handle(e)
         chart = Analyse()
-        # clearing the figure
-        self.figure.clear()
-        # creating new subplot
-        self.plot = self.figure.add_subplot(111)
-        self.plot.set_ylabel("Price in USD")
-        # executing the function dynamically
-        chart.plaindata(data, self.plot)
-        # refresh the canvas
-        self.canvas.draw()
-       
-    """ @description: create the chart foundation """
-    def setFigure(self):
-        self.figure = Figure(figsize=(11.6, 6.5), dpi=100)
-        self.canvas = FigureCanvasTkAgg(self.figure, master=self.mainframe)
-        self.canvas.draw()
-        self.canvas.get_tk_widget().grid(
-            row=3, column=0, columnspan=10, rowspan=10, padx=(20, 20))
-        self.toolbar = NavigationToolbar2Tk(self.canvas, self.mainframe, pack_toolbar=False)
-        self.toolbar.update()
-        self.toolbar.grid(
-            row=13, column=0, columnspan=10, rowspan=10, padx=(20, 20))
+        Controller(self.mainframe, data, getattr(chart, 'plaindata')).calculate()
         
     """ @description: function to clear all inputs """
     def new(self):
+        ##self.figure.clear()
         self.stock1.delete(0, 'end')
         self.stock2.delete(0, 'end')
 
@@ -324,5 +236,5 @@ class Mainframe:
      
 
 if __name__ == "__main__":
-    root = Mainframe()
+    root = Main()
     root.run()

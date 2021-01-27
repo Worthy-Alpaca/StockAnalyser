@@ -50,9 +50,9 @@ class Input():
         url = (f"https://financialmodelingprep.com/api/v3/search?query={stock.lower()}&limit=10&exchange=NASDAQ&apikey=demo")
         response = urlopen(url)
         data = response.read().decode("utf-8")
-        test = json.loads(data)
-        if test != []:
-            return test[0]["symbol"]
+        res = json.loads(data)
+        if res != []:
+            return res[0]["symbol"]
         else:
             return False
         

@@ -29,9 +29,6 @@ class CreateToolTip(object):
         # Leaves only the label and removes the app window
         self.tw.wm_overrideredirect(True)
         self.tw.wm_geometry("+%d+%d" % (x, y))
-        """ label = tk.Label(self.tw, text=self.text, justify='left',
-                         background='yellow', relief='solid', borderwidth=1,
-                         font=("times", "10", "normal")) """
         label = tk.Text(self.tw, height=5, width=70,
                         background='yellow', relief='solid', borderwidth=1,
                         font=("times", "10", "normal"))
