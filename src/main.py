@@ -181,7 +181,10 @@ class Main:
         except Exception as e:
             return self.error.handle(e)
         chart = Analyse()
-        Controller(self.mainframe, data, getattr(chart, 'plaindata')).calculate()
+        try:
+            Controller(self.mainframe, data).calculate(getattr(chart, 'plaindata'))
+        except Exception as e:
+            return self.error.handle(e)
         
     """ @description: function to clear all inputs """
     def new(self):
