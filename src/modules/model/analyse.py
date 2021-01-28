@@ -333,6 +333,10 @@ class Analyse:
         test = result.predict(start=10, end=580)
         plot.plot(test)
 
+    def error(self, data, plot):
+        #test = "test"
+        plot.plot(test)
+
 
 if __name__ == "__main__":
     data = Input()
