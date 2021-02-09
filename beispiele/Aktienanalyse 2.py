@@ -6,14 +6,14 @@ Created on Wed Nov 25 20:23:38 2020
 """
 # dies ist ein kommentar
 #$ conda install -c ranaroussi yfinance
-from matplotlib import pyplot as plt
-import pandas as pd
-import yfinance as yf
+#from matplotlib import pyplot as plt
+#import pandas as pd
+#import yfinance as yf
 # from datetime import datetime
 # from time import time
 import pandas_datareader.data as web
 
-apple = yf.Ticker("AAPL") #Appleaktie
+#apple = yf.Ticker("AAPL") #Appleaktie
 # google = yf.Ticker("GOOG")
 # etf1 = yf.Ticker("ZPRX.DE")
 # etf2 = yf.Ticker("XWD.TO")
@@ -33,8 +33,8 @@ data["Open"].plot()
 plt.title("Apple")
 plt.legend()
 """
-df = web.DataReader("AAPL", 'yahoo', start="2019-02-01", end="2019-02-25")
-#print(df)
+df = web.DataReader("AAPL", 'yahoo', start="2019-02-01", end="2021-01-25")
+print(df)
 print(df.dtypes)
 
 
