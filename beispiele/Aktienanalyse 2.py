@@ -7,30 +7,35 @@ Created on Wed Nov 25 20:23:38 2020
 # dies ist ein kommentar
 #$ conda install -c ranaroussi yfinance
 from matplotlib import pyplot as plt
-# import pandas as pd
+import pandas as pd
 import yfinance as yf
 # from datetime import datetime
 # from time import time
+import pandas_datareader.data as web
 
 apple = yf.Ticker("AAPL") #Appleaktie
 # google = yf.Ticker("GOOG")
 # etf1 = yf.Ticker("ZPRX.DE")
 # etf2 = yf.Ticker("XWD.TO")
 # msft = yf.Ticker("MSFT")
-
+"""
 print(apple.history(start=("2019-02-01"), end=("2019-03-07")))
 # print(google.history(start=("2019-02-01"), end=("2019-03-07")))
 # print(etf1.history(start=("2019-02-01"), end=("2019-03-07")))
 # print(etf2.history(start=("2019-02-01"), end=("2019-03-07")))
 # print(msft.history(start=("2019-02-01"), end=("2019-03-07")))
 
-data = yf.download(("AAPL") , start="2019-02-01", end="2019-02-25")
+ata = yf.download(("AAPL") , start="2019-02-01", end="2019-02-25")
 
 plt.figure()
 data["Close"].plot()     #es funktioniert nicht Close und Open in ein Diagram zu plotten
 data["Open"].plot()
 plt.title("Apple")
 plt.legend()
+"""
+df = web.DataReader("AAPL", 'yahoo', start="2019-02-01", end="2019-02-25")
+#print(df)
+print(df.dtypes)
 
 
 
