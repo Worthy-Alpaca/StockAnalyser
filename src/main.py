@@ -6,7 +6,7 @@ Interface
 """
 
 """ Importing classes """
-from canvas import Canvas
+from parents import Canvas
 from modules import Input
 from modules import Analyse
 from modules import CreateToolTip

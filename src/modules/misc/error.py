@@ -5,7 +5,7 @@ Created on 22.01.2020
 Class to handle Errors
 """
 
-from canvas import Canvas
+from parents import Canvas
 import config
 from matplotlib import style
 import random

@@ -10,7 +10,7 @@ import os
 import sys
 from inspect import signature
 
-from canvas import Canvas
+from parents import Canvas
 
 
 
