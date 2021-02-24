@@ -48,12 +48,9 @@ class Input():
             return False
 
     def parseDate(self, date):
-        parsedate = []
         stringDate = date.split("-")
-        for i in stringDate:
-            parsedate.append(int(i))
         
-        returnDate = dt.datetime(parsedate[0], parsedate[1], parsedate[2])
+        returnDate = dt.datetime(int(stringDate[0]), int(stringDate[1]), int(stringDate[2]))
         return returnDate
         
 
