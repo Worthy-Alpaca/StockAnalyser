@@ -42,13 +42,9 @@ class Analyse:
     
     def parseDate(self, data, x):
         if x == "start":
-            startDate = data.getStartDate()
-            start = dt.datetime(startDate[0], startDate[1], startDate[2])
-            return start
+            return data.getStartDate()
         else:
-            endDate = data.getEndDate()
-            end = dt.datetime(endDate[0], endDate[1], endDate[2])
-            return end
+            return data.getEndDate()
     
     def average(self, data, plot, plot2):
         df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))

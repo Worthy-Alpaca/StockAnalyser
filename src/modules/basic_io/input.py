@@ -7,6 +7,7 @@ Input Class, used for cleaning and parsing input from GUI
 
 from urllib.request import urlopen
 import json
+import datetime as dt
 
 class Input():
 
@@ -25,20 +26,10 @@ class Input():
         self.stock2 = self.parseStock(stock)
 
     def setStartDate(self, date):
-        parsedate = []
-        stringDate = date.split("-")
-        for i in stringDate:
-            parsedate.append(int(i))
-        
-        self.startDate = parsedate
+        self.startDate = self.parseDate(date)
 
     def setEndDate(self, date):
-        parsedate = []
-        stringDate = date.split("-")
-        for i in stringDate:
-            parsedate.append(int(i))
-        
-        self.endDate = parsedate
+        self.endDate = self.parseDate(date)
 
     def parseStock(self, stock):
         if (stock.lower() == "google"):
@@ -55,6 +46,15 @@ class Input():
             return res[0]["symbol"]
         else:
             return False
+
+    def parseDate(self, date):
+        parsedate = []
+        stringDate = date.split("-")
+        for i in stringDate:
+            parsedate.append(int(i))
+        
+        returnDate = dt.datetime(parsedate[0], parsedate[1], parsedate[2])
+        return returnDate
         
 
     def getStock1(self):

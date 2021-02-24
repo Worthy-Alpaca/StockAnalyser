@@ -101,6 +101,8 @@ class Main:
 
         self.variable = tk.StringVar(self.mainframe)
         self.variable.set(OptionList[0])
+        self.option = tk.OptionMenu(self.mainframe, self.variable, *OptionList)
+        self.option.grid(row=0, column=7, padx=(0, 0))
 
         self.stock1 = tk.Entry(self.mainframe)
         self.stock1.grid(row=0, column=1)
@@ -112,8 +114,6 @@ class Main:
         self.date2 = tk.Button(
             master=self.mainframe, height=1, width=10, text="Select", command=lambda: self.showCal2())
         self.date2.grid(row=0, column=5)
-        self.option = tk.OptionMenu(self.mainframe, self.variable, *OptionList)
-        self.option.grid(row=0, column=7, padx=(0, 0))
 
     """ @description: dummy function that does nothing """
     def donothing(self):
