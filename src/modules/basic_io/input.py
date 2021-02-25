@@ -8,6 +8,10 @@ Input Class, used for cleaning and parsing input from GUI
 from urllib.request import urlopen
 import json
 import datetime as dt
+try:
+    from config import _key
+except:
+    from configDUMMY import _key
 
 class Input():
 
@@ -38,7 +42,7 @@ class Input():
         if stock == "":
             return False
 
-        url = (f"https://financialmodelingprep.com/api/v3/search?query={stock.lower()}&limit=10&exchange=NASDAQ&apikey=demo")
+        url = (f"https://financialmodelingprep.com/api/v3/search?query={stock.lower()}&limit=10&exchange=NASDAQ&apikey={_key}")
         response = urlopen(url)
         data = response.read().decode("utf-8")
         res = json.loads(data)
