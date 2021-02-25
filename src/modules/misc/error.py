@@ -31,7 +31,7 @@ class ErrorHandling(Canvas):
             self.errorPlot.set_title(f"Error: Entered stock could not be found!", color='C7')
         else:
             errorcode = self.errorCode()
-            with open(config._path + "data/errors.txt", "a") as f:
+            with open(config._PATH + "data/errors.txt", "a") as f:
                 f.write(f"{error} : {errorcode}\n")
                 f.close()
             self.errorPlot.set_title(f"An error occured. Please report to an application administrator. Errorcode: {errorcode}", color='C7')

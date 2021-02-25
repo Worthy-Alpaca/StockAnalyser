@@ -31,7 +31,7 @@ class Main:
         self.mainframe = tk.Tk()
         self.mainframe.title("STONKS analysis")
         self.mainframe.geometry("1200x750")
-        self.photo = PhotoImage(file = config._path + "src/assets/giphy.gif")
+        self.photo = PhotoImage(file = config._PATH + "src/assets/giphy.gif")
         self.mainframe.iconphoto(True, self.photo)
         """ Declaring things for later use """
         self.calDate1 = None
@@ -193,7 +193,7 @@ class Main:
     def saveAs(self):
         file_opt = options = {}
         options['filetypes'] = [('JSON files', '.json'), ('all files', '.*')]
-        options['initialdir'] = config._path + "data"
+        options['initialdir'] = config._PATH + "data"
 
         filename = filedialog.asksaveasfile(defaultextension=".json", **file_opt)
         if filename is None:  
@@ -209,7 +209,7 @@ class Main:
 
     """ @description: function to open an existing JSON and load it to the GUI """
     def open(self):
-        filename = filedialog.askopenfilename(initialdir=config._path + "data",
+        filename = filedialog.askopenfilename(initialdir=config._PATH + "data",
                                               title="Select file", filetypes=(("JSON files", "*.json"), ("all files", "*.*")))
         if filename == None or filename == '':
             return

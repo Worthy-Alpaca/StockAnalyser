@@ -36,7 +36,7 @@ class CreateToolTip(object):
         label.insert("end", self.text)
 
     def refresh(self, event=None):
-        with open(config._path + "src/assets/tooltips.json") as file:
+        with open(config._PATH + "src/assets/tooltips.json") as file:
             data = json.load(file)
 
         self.text = data["tooltips"][self.option.get().lower()]

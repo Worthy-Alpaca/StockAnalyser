@@ -9,9 +9,9 @@ from urllib.request import urlopen
 import json
 import datetime as dt
 try:
-    from config import _key
+    from config import _KEY
 except:
-    from configDUMMY import _key
+    from configDUMMY import _KEY
 
 class Input():
 
@@ -42,7 +42,7 @@ class Input():
         if stock == "":
             return False
 
-        url = (f"https://financialmodelingprep.com/api/v3/search?query={stock.lower()}&limit=10&exchange=NASDAQ&apikey={_key}")
+        url = (f"https://financialmodelingprep.com/api/v3/search?query={stock.lower()}&limit=10&exchange=NASDAQ&apikey={_KEY}")
         response = urlopen(url)
         data = response.read().decode("utf-8")
         res = json.loads(data)
