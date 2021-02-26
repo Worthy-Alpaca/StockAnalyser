@@ -209,8 +209,11 @@ class Main:
 
     """ @description: function to open an existing JSON and load it to the GUI """
     def open(self):
-        filename = filedialog.askopenfilename(initialdir=config._PATH + "data",
-                                              title="Select file", filetypes=(("JSON files", "*.json"), ("all files", "*.*")))
+        file_opt = options = {}
+        options['filetypes'] = [('JSON files', '.json'), ('all files', '.*')]
+        options['initialdir'] = config._PATH + "data"
+
+        filename = filedialog.askopenfilename(**file_opt)
         if filename == None or filename == '':
             return
         with open(filename) as file:
