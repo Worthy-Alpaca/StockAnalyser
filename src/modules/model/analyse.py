@@ -222,30 +222,6 @@ class Analyse:
         
         plot2.legend((stockslgd), loc='upper left')
         plot.legend((stocks),loc='upper left')
-            
-        #print("Hello")
-
-    """ def risk(self, data, plot):
-        style.use('ggplot')
-        #https://medium.com/python-data/assessing-the-riskiness-of-a-single-stock-in-python-12f2c5bb85b2
-
-        
-        #assets = [data.getStock1(), data.getStock2()]
-        assets = ['AAPL', 'FB', 'TSLA']
-        df = pd.DataFrame()
-        
-        for stock in assets:
-            df[stock] = web.DataReader(stock, 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))['Adj Close']
-
-        asset_returns_daily = df.pct_change()
-        asset_volatility_daily = asset_returns_daily.std()
-
-        asset_returns_daily.plot.hist(bins=50, figsize=(10, 6))
-        plot.set_xlabel('Risiko')
-        plot.set_title(f"Risiko von {data.getStock1()} und {data.getStock2()}")
-        #print("Hello")
-        #plot(df())
-        #plot.plot(df[['Adj Close', 'Upper Band', 'Lower Band']]) """
 
     def rsi(self, data, plot, plot2, both=True):
 
@@ -293,32 +269,6 @@ class Analyse:
             plot2.legend(stocks)
             plot.set_ylabel("")
 
-#geht noch nicht
-    '''
-    def arima(self, data, plot):
-        df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
-        #df = yf.download("data.getStock1()", self.parseDate(data, "start"),self.parseDate(data, "end"))
-        df.index = pd.DatetimeIndex(df.index).to_period("d")
-        #model = ARIMA(df["Open"], order=(3, 2, 3))
-        #result = model.fit()
-        #result.plot_predict(start=dt.datetime(2020, 12, 20), end=dt.datetime(2021, 1, 20))
-        X = df.values
-        size = int(len(X) * 0.66)
-        train, test = X[0:size], X[size:len(X)]
-        history = [x for x in train]
-        predictions = list()
-        # walk-forward validation
-        for t in range(len(test)):
-            model = ARIMA(history, order=(5, 1, 0))
-            model_fit = model.fit()
-            output = model_fit.forecast()
-            yhat = output[0]
-            predictions.append(yhat)
-            obs = test[t]
-            history.append(obs)
-            print('predicted=%f, expected=%f' % (yhat, obs))
-    '''
-
     def arima(self, data, plot):
         warnings.filterwarnings("ignore")
         df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
@@ -341,7 +291,6 @@ if __name__ == "__main__":
     #test.bollinger(data, plot, plot2)
     #test.volume(data, plot)
     test.arima(data, plot)
-    #test.volatilität(data, plot, plot2)
     #test.dailyreturns(data, plot)
     test.arima(data, plot)
     #test.risk(data, plot) #muss noch optimiert werden
