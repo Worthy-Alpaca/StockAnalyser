@@ -10,7 +10,7 @@ import os
 import sys
 from inspect import signature
 
-from canvas import Canvas
+from parents import Canvas
 
 
 
@@ -66,5 +66,3 @@ class Controller(Canvas):
         self.args.append(self.plot)
         self.args.append(self.plot2)
 
-    def test(self):
-        pass

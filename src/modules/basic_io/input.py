@@ -7,6 +7,11 @@ Input Class, used for cleaning and parsing input from GUI
 
 from urllib.request import urlopen
 import json
+import datetime as dt
+try:
+    from config import _KEY
+except:
+    from configDUMMY import _KEY
 
 class Input():
 
@@ -25,20 +30,10 @@ class Input():
         self.stock2 = self.parseStock(stock)
 
     def setStartDate(self, date):
-        parsedate = []
-        stringDate = date.split("-")
-        for i in stringDate:
-            parsedate.append(int(i))
-        
-        self.startDate = parsedate
+        self.startDate = self.parseDate(date)
 
     def setEndDate(self, date):
-        parsedate = []
-        stringDate = date.split("-")
-        for i in stringDate:
-            parsedate.append(int(i))
-        
-        self.endDate = parsedate
+        self.endDate = self.parseDate(date)
 
     def parseStock(self, stock):
         if (stock.lower() == "google"):
@@ -47,7 +42,7 @@ class Input():
         if stock == "":
             return False
 
-        url = (f"https://financialmodelingprep.com/api/v3/search?query={stock.lower()}&limit=10&exchange=NASDAQ&apikey=demo")
+        url = (f"https://financialmodelingprep.com/api/v3/search?query={stock.lower()}&limit=10&exchange=NASDAQ&apikey={_KEY}")
         response = urlopen(url)
         data = response.read().decode("utf-8")
         res = json.loads(data)
@@ -55,6 +50,12 @@ class Input():
             return res[0]["symbol"]
         else:
             return False
+
+    def parseDate(self, date):
+        stringDate = date.split("-")
+        
+        returnDate = dt.datetime(int(stringDate[0]), int(stringDate[1]), int(stringDate[2]))
+        return returnDate
         
 
     def getStock1(self):

@@ -6,7 +6,7 @@ Interface
 """
 
 """ Importing classes """
-from canvas import Canvas
+from parents import Canvas
 from modules import Input
 from modules import Analyse
 from modules import CreateToolTip
@@ -31,7 +31,7 @@ class Main:
         self.mainframe = tk.Tk()
         self.mainframe.title("STONKS analysis")
         self.mainframe.geometry("1200x750")
-        self.photo = PhotoImage(file = config._path + "src/assets/giphy.gif")
+        self.photo = PhotoImage(file = config._PATH + "src/assets/giphy.gif")
         self.mainframe.iconphoto(True, self.photo)
         """ Declaring things for later use """
         self.calDate1 = None
@@ -101,6 +101,8 @@ class Main:
 
         self.variable = tk.StringVar(self.mainframe)
         self.variable.set(OptionList[0])
+        self.option = tk.OptionMenu(self.mainframe, self.variable, *OptionList)
+        self.option.grid(row=0, column=7, padx=(0, 0))
 
         self.stock1 = tk.Entry(self.mainframe)
         self.stock1.grid(row=0, column=1)
@@ -112,8 +114,6 @@ class Main:
         self.date2 = tk.Button(
             master=self.mainframe, height=1, width=10, text="Select", command=lambda: self.showCal2())
         self.date2.grid(row=0, column=5)
-        self.option = tk.OptionMenu(self.mainframe, self.variable, *OptionList)
-        self.option.grid(row=0, column=7, padx=(0, 0))
 
     """ @description: dummy function that does nothing """
     def donothing(self):
@@ -191,7 +191,7 @@ class Main:
     def saveAs(self):
         file_opt = options = {}
         options['filetypes'] = [('JSON files', '.json'), ('all files', '.*')]
-        options['initialdir'] = config._path + "data"
+        options['initialdir'] = config._PATH + "data"
 
         filename = filedialog.asksaveasfile(defaultextension=".json", **file_opt)
         if filename is None:  
@@ -207,8 +207,11 @@ class Main:
 
     """ @description: function to open an existing JSON and load it to the GUI """
     def open(self):
-        filename = filedialog.askopenfilename(initialdir=config._path + "data",
-                                              title="Select file", filetypes=(("JSON files", "*.json"), ("all files", "*.*")))
+        file_opt = options = {}
+        options['filetypes'] = [('JSON files', '.json'), ('all files', '.*')]
+        options['initialdir'] = config._PATH + "data"
+
+        filename = filedialog.askopenfilename(**file_opt)
         if filename == None or filename == '':
             return
         with open(filename) as file:
