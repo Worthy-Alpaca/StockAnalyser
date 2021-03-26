@@ -14,7 +14,7 @@ from modules import Controller
 from modules import ErrorHandling
 
 """ Importing config """
-import config
+import config 
 
 """ Importing Modules """
 import tkinter as tk
