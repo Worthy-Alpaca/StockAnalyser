@@ -50,8 +50,8 @@ class Analyse:
         df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
         style.use('ggplot')
 
-        df['200ma'] = df['Adj Close'].rolling(window=200, min_periods=0).mean()        # 100 Average
-        df['38ma'] = df['Adj Close'].rolling(window=38, min_periods=0).mean()
+        df['200ma'] = df['Adj Close'].rolling(window=200, min_periods=0).mean()        # 200 Average
+        df['38ma'] = df['Adj Close'].rolling(window=38, min_periods=0).mean()          # 38 Avarage
 
         plot.plot(df.index, df['Adj Close'])
         plot.plot(df.index, df['200ma'])
@@ -62,8 +62,8 @@ class Analyse:
         
         if data.getStock2() != False:
             df2 = web.DataReader(data.getStock2(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
-            df2['200ma'] = df2['Adj Close'].rolling(window=200, min_periods=0).mean()        # 100 Average
-            df2['38ma'] = df2['Adj Close'].rolling(window=38, min_periods=0).mean()
+            df2['200ma'] = df2['Adj Close'].rolling(window=200, min_periods=0).mean()        # 200 Average
+            df2['38ma'] = df2['Adj Close'].rolling(window=38, min_periods=0).mean()          # 38 Avarage
 
             plot2.plot(df2.index, df2['Adj Close'])
             plot2.plot(df2.index, df2['200ma'])
@@ -95,7 +95,7 @@ class Analyse:
         df_ohlc = df['Adj Close'].resample('10D').ohlc() 
         df_ohlc.reset_index(inplace=True)
         df_ohlc['Date'] = df_ohlc['Date'].map(mdates.date2num)
-
+        # Quelle: https://pythonprogramming.net/more-stock-data-manipulation-python-programming-for-finance/
         plot.xaxis_date()
         plot.set_title(f"Candlesticks for {data.getStock1()}")
         candlestick_ohlc(plot, df_ohlc.values, width=4, colorup='g')
@@ -126,7 +126,7 @@ class Analyse:
 
     def bollinger(self, data, plot, plot2):
         
-        #https://medium.com/python-data/setting-up-a-bollinger-band-with-python-28941e2fa300'
+        
 
         style.use('ggplot')
         df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
@@ -137,7 +137,8 @@ class Analyse:
         df['Upper Band'] = df['30 Day MA'] + (df['30 Day STD'] * 2)
         #Lower Band
         df['Lower Band'] = df['30 Day MA'] - (df['30 Day STD'] * 2)
-        
+
+        # Quelle: https://medium.com/python-data/setting-up-a-bollinger-band-with-python-28941e2fa300'
         plot.plot(df[['Upper Band', 'Lower Band', "Adj Close"]])
         plot.set_title(f"30 Day Bollinger Band for {data.getStock1()}")
         plot.legend(('Upper Band', 'Lower Band', '30 Day STD'), loc='upper left')
@@ -154,12 +155,12 @@ class Analyse:
 
     def volatility(self, data, plot, plot2, both=True):
 
-        #https://medium.com/python-data/time-series-aggregation-techniques-with-python-a-look-at-major-cryptocurrencies-a9eb1dd49c1b
+        
 
         style.use('ggplot')
         df = web.DataReader(data.getStock1(), 'yahoo', self.parseDate(data, "start"), self.parseDate(data, "end"))
         df['30_day_volatility'] = df['Close'].rolling(window=20).std()
-
+            # Quelle: https://medium.com/python-data/time-series-aggregation-techniques-with-python-a-look-at-major-cryptocurrencies-a9eb1dd49c1b
         plot.plot(df[['Adj Close']])
         plot2.plot(df[['30_day_volatility']])
         plot2.set_ylabel("")
@@ -217,6 +218,8 @@ class Analyse:
             df['MACD'] = (df['ema12']-df['ema26'])
 
             df['Signal'] = df['MACD'].ewm(span=9).mean()
+
+            # Quelle: https://towardsdatascience.com/implementing-macd-in-python-cc9b2280126a
             plot.plot(df[['Adj Close']])
             plot2.plot(df[['MACD', 'Signal']])
         
@@ -275,6 +278,8 @@ class Analyse:
         model = ARIMA(df["Open"], order=(3,2,3))
         result = model.fit()
         result.plot_predict(15,580)
+
+        # Quelle: Vorlesung: Andre Drews
 
 
 if __name__ == "__main__":
