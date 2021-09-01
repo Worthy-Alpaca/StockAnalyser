@@ -6,3 +6,4 @@ beispiele\Internet Tutorial\stock_dfs
 __pycache__
 config.json
 config.py
+/env
