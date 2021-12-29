@@ -8,8 +8,6 @@ Analyse
 
 """ Importing Modules """
 import pandas as pd
-import yfinance as yf
-import datetime as dt
 import matplotlib.pyplot as plt
 import warnings
 
